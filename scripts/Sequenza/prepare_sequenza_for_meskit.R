@@ -134,11 +134,10 @@ if (!is.na(ploidy)) {
             .before = CopyNumber
         ) |>
         dplyr::select(!c(CopyNumber, ploidy.mean.cn)) |>
-        dplyr::rename(CopyNumber = CopyNumber_normalised) |>
-        dplyr::mutate(
-            Tumor_Sample_Barcode = paste0(Tumor_Sample_Barcode, "_hum")
-        )
+        dplyr::rename(CopyNumber = CopyNumber_normalised)
 }
+
+seg_pdx <- seg_pdx |> dplyr::mutate(Tumor_Sample_Barcode = paste0(Tumor_Sample_Barcode, "_hum"))
 
 seg <- dplyr::bind_rows(seg_human, seg_pdx) |> tidyr::drop_na()
 
