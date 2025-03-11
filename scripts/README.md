@@ -1,8 +1,8 @@
 # Generating CNA heatmaps with MesKit
 
-## Sequenza
+## Sequenza
 
-### Adjusted copy number results
+### Adjusted copy number results
 
 ```bash
 PROJDIR="/lustre/scratch124/casm/team113/projects/6633_PDX_models_Latin_America_WES"
@@ -15,7 +15,7 @@ ${DERMATLAS_RSCRIPT} ${PROJDIR}/scripts/MESKIT/acral-melanoma-meskit/scripts/cna
     --outdir "${PROJDIR}/analysis/Sequenza/BrazilianPop_PairedSamples_Hum-PDX_SequenzaFiles_Jan2025/MesKit_analysis_adjusted"
 ```
 
-### Not adjusted copy number results
+### Not adjusted copy number results
 
 ```bash
 PROJDIR="/lustre/scratch124/casm/team113/projects/6633_PDX_models_Latin_America_WES"
@@ -28,9 +28,9 @@ ${DERMATLAS_RSCRIPT} ${PROJDIR}/scripts/MESKIT/acral-melanoma-meskit/scripts/cna
     --outdir "${PROJDIR}/analysis/Sequenza/BrazilianPop_PairedSamples_Hum-PDX_SequenzaFiles_Jan2025/MesKit_analysis_not_adjusted"
 ```
 
-## ASCAT
+## ASCAT
 
-### Adjusted copy number results
+### Adjusted copy number results
 
 ```bash
 PROJDIR="/lustre/scratch124/casm/team113/projects/6633_PDX_models_Latin_America_WES"
@@ -43,7 +43,7 @@ ${DERMATLAS_RSCRIPT} ${PROJDIR}/scripts/MESKIT/acral-melanoma-meskit/scripts/cna
     --outdir "${PROJDIR}/analysis/ASCAT/MesKit_analysis_adjusted"
 ```
 
-### Not adjusted copy number results
+### Not adjusted copy number results
 
 ```bash
 PROJDIR="/lustre/scratch124/casm/team113/projects/6633_PDX_models_Latin_America_WES"
