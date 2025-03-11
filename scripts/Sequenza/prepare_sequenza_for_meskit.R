@@ -33,7 +33,7 @@ option_list <- list(
         help = "Prefix for output segment file."
     ),
     make_option(c("--ploidy"),
-        dest = "ploidy",
+        dest = "ploidy_file",
         action = "store",
         default = NA,
         type = "character",
@@ -51,98 +51,88 @@ human <- arguments$options$human
 pdx <- arguments$options$pdx
 outdir <- arguments$options$outdir
 prefix <- arguments$options$prefix
-ploidy <- arguments$options$ploidy
+ploidy_file <- arguments$options$ploidy_file
 
-sequenza_files_human <- fs::dir_ls(human, recurse = TRUE, glob = "*_segments.txt$")
-sequenza_files_pdx <- fs::dir_ls(pdx, recurse = TRUE, glob = "*_segments.txt$")
-if (!is.na(ploidy)) {
-    ploidy_table <- readr::read_table(ploidy) |> dplyr::rename(Tumor_Sample_Barcode = sample)
+if (!is.na(ploidy_file)) {
+    ploidy_table <- readr::read_table(ploidy_file)
+    colnames(ploidy_table) <- c("Tumor_Sample_Barcode", "Ploidy")
+    warning("A ploidy table has been provided. Copy number results will be adjusted relative to the ploidy values!")
 } else {
-    warning("A ploidy table has not been provided. Proceeding without normalising copy number results...")
+    warning("A ploidy table has not been provided. Proceeding without adjusting copy number results...")
 }
 
-seg_human <- readr::read_tsv(sequenza_files_human, col_names = TRUE, id = "Tumor_Sample_Barcode") |>
-    dplyr::mutate(
-        Tumor_Sample_Barcode = stringr::str_remove(basename(Tumor_Sample_Barcode), "_segments.txt"),
-        Patient_ID = substring(Tumor_Sample_Barcode, 1, 7)
-    ) |>
-    dplyr::rename(
-        Chromosome = chromosome,
-        Start_Position = start.pos,
-        End_Position = end.pos,
-        CopyNumber = CNt,
-        Major_CN = A,
-        Minor_CN = B
-    ) |>
-    dplyr::select(
-        Patient_ID,
-        Tumor_Sample_Barcode,
-        Chromosome,
-        Start_Position,
-        End_Position,
-        CopyNumber,
-        Major_CN,
-        Minor_CN
-    )
-
-if (!is.na(ploidy)) {
-    seg_human <- seg_human |>
+adjust_copynumber <- function(segments) {
+    segments <- segments |>
         dplyr::left_join(
             ploidy_table,
             by = dplyr::join_by(Tumor_Sample_Barcode)
         ) |>
+        dplyr::mutate(Ploidy = round(Ploidy)) |>
         dplyr::mutate(
-            CopyNumber_normalised = round(CopyNumber / ploidy.mean.cn),
+            CopyNumber_adjusted = dplyr::case_when(
+                CopyNumber == 0 ~ 0, # Deletion
+                CopyNumber < Ploidy ~ 1, #  Loss
+                CopyNumber == Ploidy ~ 2, # Neutral
+                CopyNumber > Ploidy & CopyNumber < (2 * Ploidy) ~ 3, # Gain
+                CopyNumber >= (2 * Ploidy) ~ 4, #  Amplification
+            ),
             .before = CopyNumber
         ) |>
-        dplyr::select(!c(CopyNumber, ploidy.mean.cn)) |>
-        dplyr::rename(CopyNumber = CopyNumber_normalised)
+        dplyr::select(!c(CopyNumber, Ploidy)) |>
+        dplyr::rename(CopyNumber = CopyNumber_adjusted)
+
+    return(segments)
 }
 
-seg_pdx <- readr::read_tsv(sequenza_files_pdx, col_names = TRUE, id = "Tumor_Sample_Barcode") |>
-    dplyr::mutate(
-        Tumor_Sample_Barcode = stringr::str_remove(basename(Tumor_Sample_Barcode), "_segments.txt"),
-        Patient_ID = substring(Tumor_Sample_Barcode, 1, 7)
-    ) |>
-    dplyr::rename(
-        Chromosome = chromosome,
-        Start_Position = start.pos,
-        End_Position = end.pos,
-        CopyNumber = CNt,
-        Major_CN = A,
-        Minor_CN = B
-    ) |>
-    dplyr::select(
-        Patient_ID,
-        Tumor_Sample_Barcode,
-        Chromosome,
-        Start_Position,
-        End_Position,
-        CopyNumber,
-        Major_CN,
-        Minor_CN
-    )
-
-if (!is.na(ploidy)) {
-    seg_pdx <- seg_pdx |>
-        dplyr::left_join(
-            ploidy_table,
-            by = dplyr::join_by(Tumor_Sample_Barcode)
-        ) |>
+load_copynumber <- function(files, ploidy, source) {
+    segments <- readr::read_tsv(files, col_names = TRUE, id = "Tumor_Sample_Barcode") |>
         dplyr::mutate(
-            CopyNumber_normalised = round(CopyNumber / ploidy.mean.cn),
-            .before = CopyNumber
+            Tumor_Sample_Barcode = stringr::str_remove(basename(Tumor_Sample_Barcode), "_segments.txt"),
+            Patient_ID = substring(Tumor_Sample_Barcode, 1, 7)
         ) |>
-        dplyr::select(!c(CopyNumber, ploidy.mean.cn)) |>
-        dplyr::rename(CopyNumber = CopyNumber_normalised)
+        dplyr::rename(
+            Chromosome = chromosome,
+            Start_Position = start.pos,
+            End_Position = end.pos,
+            CopyNumber = CNt,
+            Major_CN = A,
+            Minor_CN = B
+        ) |>
+        dplyr::select(
+            Patient_ID,
+            Tumor_Sample_Barcode,
+            Chromosome,
+            Start_Position,
+            End_Position,
+            CopyNumber,
+            Major_CN,
+            Minor_CN
+        )
+
+    if (!is.na(ploidy_file)) {
+        segments <- adjust_copynumber(segments)
+    }
+
+    if (source == "pdx") {
+        segments <- segments |> dplyr::mutate(Tumor_Sample_Barcode = paste0(Tumor_Sample_Barcode, "_hum"))
+    }
 }
 
-seg_pdx <- seg_pdx |> dplyr::mutate(Tumor_Sample_Barcode = paste0(Tumor_Sample_Barcode, "_hum"))
+segments_human <- load_copynumber(
+    files = fs::dir_ls(human, recurse = TRUE, glob = "*_segments.txt$"),
+    ploidy = ploidy_table,
+    source = "human"
+)
+segments_pdx <- load_copynumber(
+    files = fs::dir_ls(pdx, recurse = TRUE, glob = "*_segments.txt$"),
+    ploidy = ploidy_table,
+    source = "pdx"
+)
 
-seg <- dplyr::bind_rows(seg_human, seg_pdx) |> tidyr::drop_na()
+all_segments <- dplyr::bind_rows(segments_human, segments_pdx) |> tidyr::drop_na()
 
 write.table(
-    seg,
+    all_segments,
     file = paste0(outdir, "/", prefix, "_segments_for_meskit.tsv"),
     sep = "\t",
     quote = FALSE,
