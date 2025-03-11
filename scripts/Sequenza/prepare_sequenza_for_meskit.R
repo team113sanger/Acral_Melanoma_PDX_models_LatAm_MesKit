@@ -116,6 +116,8 @@ load_copynumber <- function(files, ploidy, source) {
     if (source == "pdx") {
         segments <- segments |> dplyr::mutate(Tumor_Sample_Barcode = paste0(Tumor_Sample_Barcode, "_hum"))
     }
+
+    return(segments)
 }
 
 segments_human <- load_copynumber(
