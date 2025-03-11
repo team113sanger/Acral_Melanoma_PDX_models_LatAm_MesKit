@@ -65,7 +65,13 @@ for (patient in segments %>% names()) {
     segments[[patient]]$Tumor_Sample_Label <- gsub("_Tumour - local_recurrence", "", segments[[patient]]$Tumor_Sample_Label)
     segments[[patient]]$Tumor_Sample_Label <- gsub("_Tumour - primary", "", segments[[patient]]$Tumor_Sample_Label)
 
-    plot <- plotCNA(segments, patient.id = patient, use.tumorSampleLabel = TRUE)
+    plot <- plotCNA(
+        segments,
+        patient.id = patient,
+        use.tumorSampleLabel = TRUE,
+        sample.bar.height = 0.25,
+        chrom.bar.height = 0.1
+    )
 
-    ggexport(plot, filename = paste0(outdir, "plots/", patient, "/", patient, ".pdf"), width = 8, height = 4)
+    ggexport(plot, filename = paste0(outdir, "plots/", patient, "/", patient, ".pdf"), width = 15, height = 4)
 }
