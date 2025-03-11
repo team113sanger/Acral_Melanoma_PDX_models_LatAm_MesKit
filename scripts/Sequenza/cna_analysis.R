@@ -2,25 +2,57 @@ library(MesKit)
 library(dplyr)
 library(ggpubr)
 library(stringr)
+library(optparse)
 
-proj_dir <- "/lustre/scratch124/casm/team113/projects/6633_PDX_models_Latin_America_WES/analysis/Sequenza/BrazilianPop_PairedSamples_Hum-PDX_SequenzaFiles_Jan2025"
-setwd(proj_dir)
-
-segments <- readSegment(segFile = "segments_for_meskit.tsv")
-
-#  Load manifest.
-manifest <- read.csv(
-    "/lustre/scratch124/casm/team113/projects/6633_PDX_models_Latin_America_WES/analysis/release_v2/combined_2729_3248/2729_3248_combined_manifest.txt",
-    sep = "\t"
+option_list <- list(
+    make_option(c("--segments-file"),
+        dest = "segments_file",
+        action = "store",
+        default = NA,
+        type = "character",
+        help = "Path to a file with Sequenza segments."
+    ),
+    make_option(c("--manifest"),
+        dest = "manifest",
+        action = "store",
+        default = NA,
+        type = "character",
+        help = "Path to a manifest file."
+    ),
+    make_option(c("-o", "--outdir"),
+        dest = "outdir",
+        action = "store",
+        default = NA,
+        type = "character",
+        help = "Path to output directory."
+    )
 )
 
-dir.create("plots/")
-setwd("plots/")
+parser <- OptionParser(
+    usage = "cna_analysis.R [options] --segments-file path/to/segments.tsv --manifest path/to/manifest.txt ---outdir path/to/outdir",
+    option_list = option_list
+)
+arguments <- parse_args(parser, positional_arguments = 0)
+
+segments_file <- arguments$options$segments_file
+manifest <- arguments$options$manifest
+outdir <- arguments$options$outdir
+
+segments <- readSegment(segFile = segments_file)
+
+#  Load manifest.
+manifest <- read.csv(manifest, sep = "\t")
+
+#  Check the last character in the directory path is a slash symbol ("/").
+if (substr(outdir, nchar(outdir), nchar(outdir)) != "/") {
+    outdir <- paste0(outdir, "/")
+}
+dir.create(paste0(outdir, "plots/"))
 
 for (patient in segments %>% names()) {
     if (length(unique(segments[[patient]]$Tumor_Sample_Barcode)) == 1) next
 
-    dir.create(patient)
+    dir.create(paste0(outdir, "plots/", patient))
 
     segments[[patient]]$Tumor_Sample_Label <- manifest$tumour_sample_ID_in_COSMIC[match(
         segments[[patient]]$Tumor_Sample_Barcode, manifest$Tumour.Sample
@@ -33,9 +65,7 @@ for (patient in segments %>% names()) {
     segments[[patient]]$Tumor_Sample_Label <- gsub("_Tumour - local_recurrence", "", segments[[patient]]$Tumor_Sample_Label)
     segments[[patient]]$Tumor_Sample_Label <- gsub("_Tumour - primary", "", segments[[patient]]$Tumor_Sample_Label)
 
-    # segments[[patient]] <- segments[[patient]] |> tidyr::drop_na()
-
     plot <- plotCNA(segments, patient.id = patient, use.tumorSampleLabel = TRUE)
 
-    ggexport(plot, filename = paste0(patient, "/", patient, ".pdf"), width = 8, height = 4)
+    ggexport(plot, filename = paste0(outdir, "plots/", patient, "/", patient, ".pdf"), width = 8, height = 4)
 }
