@@ -1,4 +1,4 @@
-# Generating segment files for MesKit with ASCAT outputs
+ **Generating segment files for MesKit with ASCAT outputs**
 
 ```bash
 PROJDIR="/lustre/scratch124/casm/team113/projects/6633_PDX_models_Latin_America_WES"
