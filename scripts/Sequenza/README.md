@@ -38,7 +38,8 @@ ${DERMATLAS_RSCRIPT} "${PROJDIR}/scripts/MESKIT/acral-melanoma-meskit/scripts/Se
     --human "${PROJDIR}/analysis/Sequenza/BrazilianPop_PairedSamples_Hum-PDX_SequenzaFiles_Jan2025/Braz_Sequenza_AltModels_Human" \
     --pdx "${PROJDIR}/analysis/Sequenza/BrazilianPop_PairedSamples_Hum-PDX_SequenzaFiles_Jan2025/Braz_Sequenza_AltModels_PDXs" \
     --outdir "${PROJDIR}/analysis/Sequenza/BrazilianPop_PairedSamples_Hum-PDX_SequenzaFiles_Jan2025/MesKit_analysis_with_normalisation" \
-    --prefix "normalised_AltModels"
+    --prefix "normalised_AltModels" \
+    --ploidy "${PROJDIR}/scripts/MESKIT/acral-melanoma-meskit/data/Sequenza/ploidy_table_jan2025_data.tsv"
 ```
 
 **Concatenating 1stModel and AltModel samples**
