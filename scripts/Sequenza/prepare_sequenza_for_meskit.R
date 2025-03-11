@@ -18,12 +18,19 @@ option_list <- list(
         type = "character",
         help = "Path to directory with Sequenza outputs for PDX samples."
     ),
-    make_option(c("-o", "--outdir"),
+    make_option(c("--outdir"),
         dest = "outdir",
         action = "store",
         default = NA,
         type = "character",
         help = "Path to output directory."
+    ),
+    make_option(c("--prefix"),
+        dest = "prefix",
+        action = "store",
+        default = "",
+        type = "character",
+        help = "Prefix for output segment file."
     ),
     make_option(c("--ploidy"),
         dest = "ploidy",
@@ -35,7 +42,7 @@ option_list <- list(
 )
 
 parser <- OptionParser(
-    usage = "prepare_sequenza_for_meskit.R [options] --human path/to/human --pdx path/to/pdx --outdir path/to/outdir --ploidy path/to/ploidy.tsv",
+    usage = "prepare_sequenza_for_meskit.R [options] --human path/to/human --pdx path/to/pdx --outdir path/to/outdir --prefix prefix --ploidy path/to/ploidy.tsv",
     option_list = option_list
 )
 arguments <- parse_args(parser, positional_arguments = 0)
@@ -43,6 +50,7 @@ arguments <- parse_args(parser, positional_arguments = 0)
 human <- arguments$options$human
 pdx <- arguments$options$pdx
 outdir <- arguments$options$outdir
+prefix <- arguments$options$prefix
 ploidy <- arguments$options$ploidy
 
 sequenza_files_human <- fs::dir_ls(human, recurse = TRUE, glob = "*_segments.txt$")
@@ -136,7 +144,7 @@ seg <- dplyr::bind_rows(seg_human, seg_pdx) |> tidyr::drop_na()
 
 write.table(
     seg,
-    file = paste0(outdir, "/segments_for_meskit.tsv"),
+    file = paste0(outdir, "/", prefix, "_segments_for_meskit.tsv"),
     sep = "\t",
     quote = FALSE,
     row.names = FALSE,
