@@ -29,7 +29,7 @@ option_list <- list(
 )
 
 parser <- OptionParser(
-    usage = "cna_analysis.R [options] --segments-file path/to/segments.tsv --manifest path/to/manifest.txt ---outdir path/to/outdir",
+    usage = "make_heatmaps.R [options] --segments-file path/to/segments.tsv --manifest path/to/manifest.txt ---outdir path/to/outdir",
     option_list = option_list
 )
 arguments <- parse_args(parser, positional_arguments = 0)
@@ -68,6 +68,7 @@ for (patient in segments %>% names()) {
     plot <- plotCNA(
         segments,
         patient.id = patient,
+        refBuild = "hg38",
         use.tumorSampleLabel = TRUE,
         sample.bar.height = 0.25,
         chrom.bar.height = 0.1
