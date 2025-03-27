@@ -13,6 +13,13 @@ option_list <- list(
         type = "character",
         help = "Path to a MAF file for MesKit."
     ),
+    optparse::make_option(c("--clinical"),
+        dest = "clinical",
+        action = "store",
+        default = NA,
+        type = "character",
+        help = "Path to a clinical file for MesKit."
+    ),
     optparse::make_option(c("--metadata"),
         dest = "metadata",
         action = "store",
@@ -39,7 +46,7 @@ option_list <- list(
 logger::log_threshold(logger::INFO)
 
 parser <- optparse::OptionParser(
-    usage = "make_trees.R [options] --maf path/to/maf --manifest path/to/manifest.txt --cosmic path/to/cosmic.csv ---outdir path/to/outdir",
+    usage = "make_trees.R [options] --maf path/to/maf --clinical path/to/clinical.tsv --metadata path/to/metadata.txt --cosmic path/to/cosmic.csv ---outdir path/to/outdir",
     option_list = option_list
 )
 arguments <- optparse::parse_args(parser, positional_arguments = 0)
@@ -51,14 +58,14 @@ arguments <- optparse::parse_args(parser, positional_arguments = 0)
 
 logger::log_info("Creating MAF object with MesKit...")
 maf <- arguments$options$maf
-metadata <- arguments$options$metadata
-if (!is.na(maf) && !is.na(metadata)) {
-    maf <- MesKit::readMaf(mafFile = maf, clinicalFile = metadata, refBuild = "hg38")
-} else if (is.na(maf) && !is.na(metadata)) {
+clinical <- arguments$options$clinical
+if (!is.na(maf) && !is.na(clinical)) {
+    maf_ <- MesKit::readMaf(mafFile = maf, clinicalFile = clinical, refBuild = "hg38")
+} else if (is.na(maf) && !is.na(clinical)) {
     error_message <- "A MAF file for MesKit has not been specified and is required!"
     logger::log_fatal(error_message)
     stop(error_message)
-} else if (!is.na(maf) && is.na(metadata)) {
+} else if (!is.na(maf) && is.na(clinical)) {
     error_message <- "A clinical file for MesKit has not been specified and is required!"
     logger::log_fatal(error_message)
     stop(error_message)
@@ -96,8 +103,8 @@ if (dir.exists(paste0(outdir, "plots/"))) {
 make_readable <- function(maf, patient) {
     logger::log_info("Making sample IDs more readable...")
 
-    maf[[patient]]@data$Tumor_Sample_Label <- manifest$tumour_sample_ID_in_COSMIC[match(
-        maf[[patient]]@data$Tumor_Sample_Barcode, manifest$Tumour.Sample
+    maf[[patient]]@data$Tumor_Sample_Label <- metadata$sample_ID_in_COSMIC[match(
+        maf[[patient]]@data$Tumor_Sample_Barcode, metadata$Tumor_Sample_Barcode
     )]
 
     maf[[patient]]@data$Tumor_Sample_Label <- gsub("_tumor_skin_melanoma", "", maf[[patient]]@data$Tumor_Sample_Label)
@@ -180,7 +187,7 @@ add_cosmic_info <- function(df) {
     return(df)
 }
 
-process_tree_dataframe <- function(tree_df) {
+process_tree_dataframe <- function(tree_df, maf, patient) {
     logger::log_info("Extracting mutation info...")
 
     #  Create an empty dataframe, where rearranged information from tree_df will be stored.
@@ -226,17 +233,17 @@ process_tree_dataframe <- function(tree_df) {
 }
 
 make_tree <- function(maf, patient) {
-    logger::log_info(paste0("Making tree for patient ", patient, "..."))
-
     tree <- MesKit::getPhyloTree(maf, patient.id = patient, method = "MP", min.vaf = 0.06)
 
     # Extract information from tree object. This will be a dataframe with samples as columns and mutations as rows.
     bin_df <- as.data.frame(tree@binary.matrix)
-    bin_df <- process_tree_dataframe(bin_df)
+    bin_df <- process_tree_dataframe(bin_df, maf, patient)
 
     # Save dataframe to csv file.
     write.csv(bin_df, paste0(outdir, "plots/", patient, "/", patient, "_table.csv"))
     write.csv(bin_df[bin_df$mutation_status_in_sample != "0", ], paste0(outdir, "plots/", patient, "/", patient, "_table_filt.csv"))
+
+    logger::log_info(paste0("Making tree for patient ", patient, "..."))
 
     tree <- MesKit::plotPhyloTree(tree, use.tumorSampleLabel = TRUE)
 
@@ -297,8 +304,17 @@ split_a_and_b <- function(maf, patient, samples_in_a) {
     id_A <- paste(patient, "(A)", sep = "_")
     id_B <- paste(patient, "(B)", sep = "_")
 
-    maf[[patient]]@data$Patient_ID[maf[[patient]]@data$Tumor_Sample_Barcode %in% samples_in_a] <- id_A
-    maf[[patient]]@data$Patient_ID[!(maf[[patient]]@data$Tumor_Sample_Barcode %in% samples_in_a)] <- id_B
+    if (TRUE %in% grep("PD", samples_in_a)) {
+        maf[[patient]]@data$Patient_ID[maf[[patient]]@data$Tumor_Sample_Barcode %in% samples_in_a] <- id_A
+        maf[[patient]]@data$Patient_ID[!(maf[[patient]]@data$Tumor_Sample_Barcode %in% samples_in_a)] <- id_B
+    } else if (TRUE %in% grep("AM", samples_in_a)) {
+        maf[[patient]]@data$Patient_ID[maf[[patient]]@data$Tumor_Sample_Label %in% samples_in_a] <- id_A
+        maf[[patient]]@data$Patient_ID[!(maf[[patient]]@data$Tumor_Sample_Label %in% samples_in_a)] <- id_B
+    } else {
+        error_message <- paste0("Invalid sample IDs were provided to the function split_a_and_b()")
+        logger::log_fatal(error_message)
+        stop(error_message)
+    }
 
     maf[[id_A]] <- maf[[patient]]
     maf[[id_A]]@data <- maf[[id_A]]@data |> dplyr::filter(Patient_ID == as.name(id_A))
@@ -323,8 +339,6 @@ process_patient <- function(maf, patient, action, column_for_split, samples_in_a
 
         for (id in c(id_A, id_B)) {
             dir.create(paste0(outdir, "plots/", id))
-            make_tree(maf, id)
-            make_heatmap(maf, id)
             plot_tree_and_heatmap(maf, id)
         }
     } else {
@@ -334,10 +348,11 @@ process_patient <- function(maf, patient, action, column_for_split, samples_in_a
         } else if (action == "keep") {
             maf[[patient]]@data <- maf[[patient]]@data[maf[[patient]]@data$Tumor_Sample_Label %in% keep, ]
         }
-        make_tree(maf, patient)
-        make_heatmap(maf, patient)
         plot_tree_and_heatmap(maf, patient)
     }
+
+    logger::log_info(paste0("Finished processing data of patient ", patient, "!"))
+    cat("\n")
 }
 
 #########################
@@ -390,7 +405,7 @@ patients[["PD53364"]] <- list(action = "none", column_for_split = NA, samples_in
 
 for (patient in names(patients)) {
     process_patient(
-        maf,
+        maf_,
         patient,
         patients[[patient]]$action,
         patients[[patient]]$column_for_split,
