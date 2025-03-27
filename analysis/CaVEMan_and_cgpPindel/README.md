@@ -1,6 +1,6 @@
-# Phylogenetic trees
+# Phylogenetic trees
 
-## Directory structure
+## Directory structure
 
 ```bash
 .
