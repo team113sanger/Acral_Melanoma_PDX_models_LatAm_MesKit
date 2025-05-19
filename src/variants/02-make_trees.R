@@ -11,9 +11,9 @@ logger::log_threshold(logger::INFO)
 #### Defining paths ####
 ########################
 
-data_dir <- here::here("data/variants/")
-maf_file <- paste0(data_dir, "6633_2729_3248-filtered_mutations_matched_allTum_keep_adjusted_for_meskit.maf")
-clinical_file <- paste0(data_dir, "6633_2729_3248-filtered_mutations_matched_allTum_keep_clinical_for_meskit.tsv")
+data_dir <- here::here("data/")
+maf_file <- paste0(data_dir, "variants/6633_2729_3248-filtered_mutations_matched_allTum_keep_adjusted_for_meskit.maf")
+clinical_file <- paste0(data_dir, "variants/6633_2729_3248-filtered_mutations_matched_allTum_keep_clinical_for_meskit.tsv")
 cosmic_file <- paste0(data_dir, "cancer_gene_census.v97.csv")
 
 mdata_dir <- here::here("metadata/")
