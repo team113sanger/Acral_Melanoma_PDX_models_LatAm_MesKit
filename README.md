@@ -33,3 +33,10 @@ if (!require("renv")) install.packages("renv")
 # Restore the project environment
 renv::restore()
 ```
+
+## Contact
+
+If you have any questions or comments about this repository, please contact:
+
+- Jacqueline Boccacino (<jb62@sanger.ac.uk>)
+- Martin del Castillo-Velasco Herrera (<mdc1@sanger.ac.uk>)
