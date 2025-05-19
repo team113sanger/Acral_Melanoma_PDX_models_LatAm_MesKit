@@ -6,8 +6,8 @@ The following software is required to run the analysis:
 
 - R (version 4.2.2)
 - R packages:
-    - MesKit 
-    - here
+    - `MesKit`
+    - `here`
 
 The required packages can be installed using:
 ```R
