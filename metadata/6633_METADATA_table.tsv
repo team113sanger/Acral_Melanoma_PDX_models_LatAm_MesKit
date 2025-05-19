@@ -1,0 +1,85 @@
+Tumor_Sample_Barcode	SANGER_SAMPLE_ID	Seq.Comp	Proc.as.Tum	human_sample_type	tissue_phenotype	sample_type	tissue_histology	PD_ID	Supplier_Sample_ID	PDX_passage	Donor No.	Individual	Tissue	gender	sample_ID_in_COSMIC
+PD53330a_hum	6590STDY10735008	Y	Y	DNA	skin melanoma / patient-derived xenograft	PDX	Tumour - primary	PD53330a	AM001-X1_gDNA_tumor	P1	1	1	1	Female	AM001-X1_gDNA_tumor_skin_melanoma_PDX_Tumour - primary
+PD53330c	6590STDY10735044	Y	Y	DNA	skin melanoma 	Tumour	Tumour - primary	PD53330c	AM001_gDNA_tumor	NA	1	1	2	Female	AM001_gDNA_tumor_skin_melanoma_Tumour - primary
+PD53331a	6590STDY10735045	Y	Y	DNA	skin melanoma 	Tumour	Tumour - primary	PD53331a	AM002_gDNA_tumor	NA	2	2	4	Male	AM002_gDNA_tumor_skin_melanoma_Tumour - primary
+PD53332a_hum	6590STDY10735009	Y	Y	DNA	skin melanoma / patient-derived xenograft	PDX	Tumour - primary	PD53332a	AM003a-X1_gDNA_tumor	P1	3	3	6	Female	AM003a-X1_gDNA_tumor_skin_melanoma_PDX_Tumour - primary
+PD53332c_hum	6590STDY10735028	Y	Y	DNA	skin melanoma / patient-derived xenograft	PDX	Tumour - primary	PD53332c	AM003a-X2_gDNA_tumor	P2	3	3	7	Female	AM003a-X2_gDNA_tumor_skin_melanoma_PDX_Tumour - primary
+PD53332d	6590STDY10735046	Y	Y	DNA	skin melanoma 	Tumour	Tumour - primary	PD53332d	AM003a_gDNA_tumor	NA	3	3	8	Female	AM003a_gDNA_tumor_skin_melanoma_Tumour - primary
+PD53332e	6590STDY10735047	Y	Y	DNA	skin melanoma 	Tumour	Lymph_node	PD53332e	AM003c_gDNA_tumor	NA	3	3	9	Female	AM003c_gDNA_tumor_skin_melanoma_Lymph_node
+PD53333a_hum	6590STDY10735010	Y	Y	DNA	skin melanoma / patient-derived xenograft	PDX	Tumour - primary	PD53333a	AM004-X1_gDNA_tumor	P1	4	4	11	Female	AM004-X1_gDNA_tumor_skin_melanoma_PDX_Tumour - primary
+PD53333c_hum	6590STDY10735029	Y	Y	DNA	skin melanoma / patient-derived xenograft	PDX	Tumour - primary	PD53333c	AM004-X2_gDNA_tumor	P2	4	4	12	Female	AM004-X2_gDNA_tumor_skin_melanoma_PDX_Tumour - primary
+PD53333d_hum	6590STDY10735030	Y	Y	DNA	skin melanoma / patient-derived xenograft	PDX	Tumour - primary	PD53333d	AM004-X3_gDNA_tumor	P3	4	4	13	Female	AM004-X3_gDNA_tumor_skin_melanoma_PDX_Tumour - primary
+PD53333e_hum	6590STDY10735031	Y	Y	DNA	skin melanoma / patient-derived xenograft	PDX	Tumour - primary	PD53333e	AM004-X4_gDNA_tumor	P4	4	4	14	Female	AM004-X4_gDNA_tumor_skin_melanoma_PDX_Tumour - primary
+PD53333f	6590STDY10735048	Y	Y	DNA	skin melanoma 	Tumour	Tumour - primary	PD53333f	AM004_gDNA_tumor	NA	4	4	15	Female	AM004_gDNA_tumor_skin_melanoma_Tumour - primary
+PD53334a	6590STDY10735049	Y	Y	DNA	skin melanoma 	Tumour	Tumour - primary	PD53334a	AM005_gDNA_tumor	NA	5	5	17	Male	AM005_gDNA_tumor_skin_melanoma_Tumour - primary
+PD53335a_hum	6590STDY10735011	Y	Y	DNA	skin melanoma / patient-derived xenograft	PDX	Lymph_node	PD53335a	AM006-X1_gDNA_tumor	P1	6	6	19	Female	AM006-X1_gDNA_tumor_skin_melanoma_PDX_Lymph_node
+PD53335c_hum	6590STDY10735032	Y	Y	DNA	skin melanoma / patient-derived xenograft	PDX	Lymph_node	PD53335c	AM006-X2_gDNA_tumor	P2	6	6	20	Female	AM006-X2_gDNA_tumor_skin_melanoma_PDX_Lymph_node
+PD53335d_hum	6590STDY10735033	Y	Y	DNA	skin melanoma / patient-derived xenograft	PDX	Lymph_node	PD53335d	AM006-X3_gDNA_tumor	P3	6	6	21	Female	AM006-X3_gDNA_tumor_skin_melanoma_PDX_Lymph_node
+PD53335e	6590STDY10735050	Y	Y	DNA	skin melanoma 	Tumour	Lymph_node	PD53335e	AM006_gDNA_tumor	NA	6	6	22	Female	AM006_gDNA_tumor_skin_melanoma_Lymph_node
+PD53336a_hum	6590STDY10735012	Y	Y	DNA	skin melanoma / patient-derived xenograft	PDX	Lymph_node	PD53336a	AM007-X1_gDNA_tumor	P1	7	7	24	Female	AM007-X1_gDNA_tumor_skin_melanoma_PDX_Lymph_node
+PD53336c_hum	6590STDY10735034	Y	Y	DNA	skin melanoma / patient-derived xenograft	PDX	Lymph_node	PD53336c	AM007-X2_gDNA_tumor	P2	7	7	25	Female	AM007-X2_gDNA_tumor_skin_melanoma_PDX_Lymph_node
+PD53336d_hum	6590STDY10735035	Y	Y	DNA	skin melanoma / patient-derived xenograft	PDX	Lymph_node	PD53336d	AM007-X3_gDNA_tumor	P3	7	7	26	Female	AM007-X3_gDNA_tumor_skin_melanoma_PDX_Lymph_node
+PD53336e_hum	6590STDY10735036	Y	Y	DNA	skin melanoma / patient-derived xenograft	PDX	Lymph_node	PD53336e	AM007-X4_gDNA_tumor	P4	7	7	27	Female	AM007-X4_gDNA_tumor_skin_melanoma_PDX_Lymph_node
+PD53336f	6590STDY10735051	Y	Y	DNA	skin melanoma 	Tumour	Lymph_node	PD53336f	AM007_gDNA_tumor	NA	7	7	28	Female	AM007_gDNA_tumor_skin_melanoma_Lymph_node
+PD53337a	6590STDY10735052	Y	Y	DNA	skin melanoma 	Tumour	Tumour - primary	PD53337a	AM008a_gDNA_tumor	NA	8	8	29	Male	AM008a_gDNA_tumor_skin_melanoma_Tumour - primary
+PD53337c	6590STDY10735053	Y	Y	DNA	skin melanoma 	Tumour	Tumour - local_recurrence	PD53337c	AM008b_gDNA_tumor	NA	8	8	30	Male	AM008b_gDNA_tumor_skin_melanoma_Tumour - local_recurrence
+PD53338a	6590STDY10735054	Y	Y	DNA	skin melanoma 	Tumour	Tumour - primary	PD53338a	AM009_gDNA_tumor	NA	9	9	32	Female	AM009_gDNA_tumor_skin_melanoma_Tumour - primary
+PD53339a	6590STDY10735055	Y	Y	DNA	skin melanoma 	Tumour	Tumour - primary	PD53339a	AM010_gDNA_tumor	NA	10	10	34	Female	AM010_gDNA_tumor_skin_melanoma_Tumour - primary
+PD53340a	6590STDY10735056	Y	Y	DNA	skin melanoma 	Tumour	Tumour - primary	PD53340a	AM011_gDNA_tumor	NA	11	11	36	Male	AM011_gDNA_tumor_skin_melanoma_Tumour - primary
+PD53341a	6590STDY10735057	Y	Y	DNA	skin melanoma 	Tumour	Tumour - primary	PD53341a	AM013_gDNA_tumor	NA	13	13	37	Male	AM013_gDNA_tumor_skin_melanoma_Tumour - primary
+PD53342a	6590STDY10735058	Y	Y	DNA	skin melanoma 	Tumour	Tumour - primary	PD53342a	AM014_gDNA_tumor	NA	14	14	39	Female	AM014_gDNA_tumor_skin_melanoma_Tumour - primary
+PD53343a_hum	6590STDY10735013	Y	Y	DNA	skin melanoma / patient-derived xenograft	PDX	Tumour - primary	PD53343a	AM015a-X1_gDNA_tumor	P1	15	15	41	Female	AM015a-X1_gDNA_tumor_skin_melanoma_PDX_Tumour - primary
+PD53343c_hum	6590STDY10735014	Y	Y	DNA	skin melanoma / patient-derived xenograft	PDX	Lymph_node	PD53343c	AM015b-X1_gDNA_tumor	P1	15	15	42	Female	AM015b-X1_gDNA_tumor_skin_melanoma_PDX_Lymph_node
+PD53343d_hum	6590STDY10735037	Y	Y	DNA	skin melanoma / patient-derived xenograft	PDX	Tumour - primary	PD53343d	AM015a-X2_gDNA_tumor	P2	15	15	43	Female	AM015a-X2_gDNA_tumor_skin_melanoma_PDX_Tumour - primary
+PD53343e_hum	6590STDY10735038	Y	Y	DNA	skin melanoma / patient-derived xenograft	PDX	Tumour - primary	PD53343e	AM015a-X3_gDNA_tumor	P3	15	15	44	Female	AM015a-X3_gDNA_tumor_skin_melanoma_PDX_Tumour - primary
+PD53343f_hum	6590STDY10735039	Y	Y	DNA	skin melanoma / patient-derived xenograft	PDX	Lymph_node	PD53343f	AM015b-X2_gDNA_tumor	P2	15	15	45	Female	AM015b-X2_gDNA_tumor_skin_melanoma_PDX_Lymph_node
+PD53343g_hum	6590STDY10735040	Y	Y	DNA	skin melanoma / patient-derived xenograft	PDX	Lymph_node	PD53343g	AM015b-X3_gDNA_tumor	P3	15	15	46	Female	AM015b-X3_gDNA_tumor_skin_melanoma_PDX_Lymph_node
+PD53343h	6590STDY10735059	Y	Y	DNA	skin melanoma 	Tumour	Tumour - primary	PD53343h	AM015a_gDNA_tumor	NA	15	15	47	Female	AM015a_gDNA_tumor_skin_melanoma_Tumour - primary
+PD53343i	6590STDY10735060	Y	Y	DNA	skin melanoma 	Tumour	Lymph_node	PD53343i	AM015b_gDNA_tumor	NA	15	15	48	Female	AM015b_gDNA_tumor_skin_melanoma_Lymph_node
+PD53344a_hum	6590STDY10735015	Y	Y	DNA	skin melanoma / patient-derived xenograft	PDX	Lymph_node	PD53344a	AM016-X1_gDNA_tumor	P1	16	16	50	Male	AM016-X1_gDNA_tumor_skin_melanoma_PDX_Lymph_node
+PD53344c_hum	6590STDY10735041	Y	Y	DNA	skin melanoma / patient-derived xenograft	PDX	Lymph_node	PD53344c	AM016-X2_gDNA_tumor	P2	16	16	51	Male	AM016-X2_gDNA_tumor_skin_melanoma_PDX_Lymph_node
+PD53344d_hum	6590STDY10735042	Y	Y	DNA	skin melanoma / patient-derived xenograft	PDX	Lymph_node	PD53344d	AM016-X3_gDNA_tumor	P3	16	16	52	Male	AM016-X3_gDNA_tumor_skin_melanoma_PDX_Lymph_node
+PD53344e_hum	6590STDY10735043	Y	Y	DNA	skin melanoma / patient-derived xenograft	PDX	Lymph_node	PD53344e	AM016-X4_gDNA_tumor	P4	16	16	53	Male	AM016-X4_gDNA_tumor_skin_melanoma_PDX_Lymph_node
+PD53344f	6590STDY10735061	Y	Y	DNA	skin melanoma 	Tumour	Lymph_node	PD53344f	AM016_gDNA_tumor	NA	16	16	54	Male	AM016_gDNA_tumor_skin_melanoma_Lymph_node
+PD53345a	6590STDY10735062	Y	Y	DNA	skin melanoma 	Tumour	Tumour - primary	PD53345a	AM017_gDNA_tumor	NA	17	17	55	Male	AM017_gDNA_tumor_skin_melanoma_Tumour - primary
+PD53346a	6590STDY10735063	Y	Y	DNA	skin melanoma 	Tumour	Tumour - primary	PD53346a	AM018_gDNA_tumor	NA	18	18	57	Female	AM018_gDNA_tumor_skin_melanoma_Tumour - primary
+PD53347a_hum	6590STDY10735016	Y	Y	DNA	skin melanoma / patient-derived xenograft	PDX	Tumour - primary	PD53347a	AM019-X1_gDNA_tumor	P1	19	19	59	Female	AM019-X1_gDNA_tumor_skin_melanoma_PDX_Tumour - primary
+PD53347c	6590STDY10735064	Y	Y	DNA	skin melanoma 	Tumour	Tumour - primary	PD53347c	AM019_gDNA_tumor	NA	19	19	60	Female	AM019_gDNA_tumor_skin_melanoma_Tumour - primary
+PD53348a	6590STDY10735065	Y	Y	DNA	skin melanoma 	Tumour	Tumour - primary	PD53348a	AM020_gDNA_tumor	NA	20	20	62	Male	AM020_gDNA_tumor_skin_melanoma_Tumour - primary
+PD53349a_hum	6590STDY10735017	Y	Y	DNA	skin melanoma / patient-derived xenograft	PDX	Tumour - primary	PD53349a	AM021a-X1_gDNA_tumor	P1	21	21	64	Male	AM021a-X1_gDNA_tumor_skin_melanoma_PDX_Tumour - primary
+PD53349c_hum	6590STDY10735018	Y	Y	DNA	skin melanoma / patient-derived xenograft	PDX	Lymph_node	PD53349c	AM021b-X1_gDNA_tumor	P1	21	21	65	Male	AM021b-X1_gDNA_tumor_skin_melanoma_PDX_Lymph_node
+PD53349d	6590STDY10735066	Y	Y	DNA	skin melanoma 	Tumour	Tumour - primary	PD53349d	AM021a_gDNA_tumor	NA	21	21	66	Male	AM021a_gDNA_tumor_skin_melanoma_Tumour - primary
+PD53349e	6590STDY10735067	Y	Y	DNA	skin melanoma 	Tumour	Lymph_node	PD53349e	AM021b_gDNA_tumor	NA	21	21	67	Male	AM021b_gDNA_tumor_skin_melanoma_Lymph_node
+PD53350a_hum	6590STDY10735019	Y	Y	DNA	skin melanoma / patient-derived xenograft	PDX	Tumour - primary	PD53350a	AM022a-X1_gDNA_tumor	P1	22	22	69	Male	AM022a-X1_gDNA_tumor_skin_melanoma_PDX_Tumour - primary
+PD53350c_hum	6590STDY10735020	Y	Y	DNA	skin melanoma / patient-derived xenograft	PDX	Lymph_node	PD53350c	AM022b-X1_gDNA_tumor	P1	22	22	70	Male	AM022b-X1_gDNA_tumor_skin_melanoma_PDX_Lymph_node
+PD53350d	6590STDY10735068	Y	Y	DNA	skin melanoma 	Tumour	Tumour - primary	PD53350d	AM022a_gDNA_tumor	NA	22	22	71	Male	AM022a_gDNA_tumor_skin_melanoma_Tumour - primary
+PD53350e	6590STDY10735069	Y	Y	DNA	skin melanoma 	Tumour	Lymph_node	PD53350e	AM022b_gDNA_tumor	NA	22	22	72	Male	AM022b_gDNA_tumor_skin_melanoma_Lymph_node
+PD53351a	6590STDY10735070	Y	Y	DNA	skin melanoma 	Tumour	Lymph_node	PD53351a	AM023_gDNA_tumor	NA	23	23	74	Female	AM023_gDNA_tumor_skin_melanoma_Lymph_node
+PD53352a_hum	6590STDY10735021	Y	Y	DNA	skin melanoma / patient-derived xenograft	PDX	Tumour - local_recurrence	PD53352a	AM025a-X1_gDNA_tumor	P1	25	25	76	Female	AM025a-X1_gDNA_tumor_skin_melanoma_PDX_Tumour - local_recurrence
+PD53352c_hum	6590STDY10735022	Y	Y	DNA	skin melanoma / patient-derived xenograft	PDX	Lymph_node	PD53352c	AM025b-X1_gDNA_tumor	P1	25	25	77	Female	AM025b-X1_gDNA_tumor_skin_melanoma_PDX_Lymph_node
+PD53352d	6590STDY10735071	Y	Y	DNA	skin melanoma 	Tumour	Tumour - local_recurrence	PD53352d	AM025a_gDNA_tumor	NA	25	25	78	Female	AM025a_gDNA_tumor_skin_melanoma_Tumour - local_recurrence
+PD53352e	6590STDY10735072	Y	Y	DNA	skin melanoma 	Tumour	Lymph_node	PD53352e	AM025b_gDNA_tumor	NA	25	25	79	Female	AM025b_gDNA_tumor_skin_melanoma_Lymph_node
+PD53353a	6590STDY10735073	Y	Y	DNA	skin melanoma 	Tumour	Lymph_node	PD53353a	AM026_gDNA_tumor	NA	26	26	81	Female	AM026_gDNA_tumor_skin_melanoma_Lymph_node
+PD53354a	6590STDY10735074	Y	Y	DNA	skin melanoma 	Tumour	Tumour - primary	PD53354a	AM027_gDNA_tumor	NA	27	27	83	Male	AM027_gDNA_tumor_skin_melanoma_Tumour - primary
+PD53355a_hum	6590STDY10735023	Y	Y	DNA	skin melanoma / patient-derived xenograft	PDX	Tumour - primary	PD53355a	AM029-X1_gDNA_tumor	P1	29	29	85	Male	AM029-X1_gDNA_tumor_skin_melanoma_PDX_Tumour - primary
+PD53355c	6590STDY10735075	Y	Y	DNA	skin melanoma 	Tumour	Tumour - primary	PD53355c	AM029_gDNA_tumor	NA	29	29	86	Male	AM029_gDNA_tumor_skin_melanoma_Tumour - primary
+PD53356a_hum	6590STDY10735024	Y	Y	DNA	skin melanoma / patient-derived xenograft	PDX	Lymph_node	PD53356a	AM031-X1 _gDNA_tumor	P1	31	31	88	Female	AM031-X1 _gDNA_tumor_skin_melanoma_PDX_Lymph_node
+PD53356c	6590STDY10735076	Y	Y	DNA	skin melanoma 	Tumour	Lymph_node	PD53356c	AM031_gDNA_tumor	NA	31	31	89	Female	AM031_gDNA_tumor_skin_melanoma_Lymph_node
+PD53357a_hum	6590STDY10735025	Y	Y	DNA	skin melanoma / patient-derived xenograft	PDX	Lymph_node	PD53357a	AM032b-X1_gDNA_tumor	P1	32	32	90	Female	AM032b-X1_gDNA_tumor_skin_melanoma_PDX_Lymph_node
+PD53357c	6590STDY10735077	Y	Y	DNA	skin melanoma 	Tumour	Tumour - primary	PD53357c	AM032a_gDNA_tumor	NA	32	32	91	Female	AM032a_gDNA_tumor_skin_melanoma_Tumour - primary
+PD53357d	6590STDY10735078	Y	Y	DNA	skin melanoma 	Tumour	Lymph_node	PD53357d	AM032b_gDNA_tumor	NA	32	32	92	Female	AM032b_gDNA_tumor_skin_melanoma_Lymph_node
+PD53357e	6590STDY10735079	Y	Y	DNA	skin melanoma 	Tumour	Lymph_node	PD53357e	AM032c_gDNA_tumor	NA	32	32	93	Female	AM032c_gDNA_tumor_skin_melanoma_Lymph_node
+PD53358a	6590STDY10735080	Y	Y	DNA	skin melanoma 	Tumour	Tumour - local_recurrence	PD53358a	AM033_gDNA_tumor	NA	33	33	95	Female	AM033_gDNA_tumor_skin_melanoma_Tumour - local_recurrence
+PD53359a_hum	6590STDY10735026	Y	Y	DNA	skin melanoma / patient-derived xenograft	PDX	Lymph_node	PD53359a	AM034-X1_gDNA_tumor	P1	34	34	97	Female	AM034-X1_gDNA_tumor_skin_melanoma_PDX_Lymph_node
+PD53359c	6590STDY10735081	Y	Y	DNA	skin melanoma 	Tumour	Lymph_node	PD53359c	AM034_gDNA_tumor	NA	34	34	98	Female	AM034_gDNA_tumor_skin_melanoma_Lymph_node
+PD53360a	6590STDY10735082	Y	Y	DNA	skin melanoma 	Tumour	Tumour - primary	PD53360a	AM041_gDNA_tumor	NA	41	41	100	Male	AM041_gDNA_tumor_skin_melanoma_Tumour - primary
+PD53361a	6590STDY10735083	Y	Y	DNA	skin melanoma 	Tumour	Tumour - primary	PD53361a	AM042_gDNA_tumor	NA	42	42	101	Male	AM042_gDNA_tumor_skin_melanoma_Tumour - primary
+PD53362a	6590STDY10735084	Y	Y	DNA	skin melanoma 	Tumour	Tumour - primary	PD53362a	AM043_gDNA_tumor	NA	43	43	103	Male	AM043_gDNA_tumor_skin_melanoma_Tumour - primary
+PD53363a	6590STDY10735085	Y	Y	DNA	skin melanoma 	Tumour	Tumour - primary	PD53363a	AM044_gDNA_tumor	NA	44	44	105	Female	AM044_gDNA_tumor_skin_melanoma_Tumour - primary
+PD53364a_hum	6590STDY10735027	Y	Y	DNA	skin melanoma / patient-derived xenograft	PDX	Tumour - primary	PD53364a	AM045-X1_gDNA_tumor	P1	45	45	107	Female	AM045-X1_gDNA_tumor_skin_melanoma_PDX_Tumour - primary
+PD53364c	6590STDY10735086	Y	Y	DNA	skin melanoma 	Tumour	Tumour - primary	PD53364c	AM045_gDNA_tumor	NA	45	45	108	Female	AM045_gDNA_tumor_skin_melanoma_Tumour - primary
+PD53365a	6590STDY10735087	Y	Y	DNA	skin melanoma 	Tumour	Tumour - primary	PD53365a	AM046_gDNA_tumor	NA	46	46	110	Female	AM046_gDNA_tumor_skin_melanoma_Tumour - primary
+PD53366a	6590STDY10735088	Y	Y	DNA	skin melanoma 	Tumour	Tumour - primary	PD53366a	AM047_gDNA_tumor	NA	47	47	112	Male	AM047_gDNA_tumor_skin_melanoma_Tumour - primary
+PD53367a	6590STDY10735089	Y	Y	DNA	skin melanoma 	Tumour	Tumour - primary	PD53367a	AM048_gDNA_tumor	NA	48	48	114	Female	AM048_gDNA_tumor_skin_melanoma_Tumour - primary
+PD53368a	6590STDY10735090	Y	Y	DNA	skin melanoma 	Tumour	Tumour - primary	PD53368a	AM049_gDNA_tumor	NA	49	49	116	Male	AM049_gDNA_tumor_skin_melanoma_Tumour - primary
+PD53369a	6590STDY10735091	Y	Y	DNA	skin melanoma 	Tumour	Tumour - primary	PD53369a	AM050_gDNA_tumor	NA	50	50	118	Male	AM050_gDNA_tumor_skin_melanoma_Tumour - primary
