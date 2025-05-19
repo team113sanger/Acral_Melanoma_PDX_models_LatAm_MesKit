@@ -171,6 +171,7 @@ process_tree_dataframe <- function(tree_df, maf, patient) {
 }
 
 make_tree <- function(maf, patient) {
+    set.seed(42, kind = "L'Ecuyer-CMRG")
     tree <- MesKit::getPhyloTree(maf, patient.id = patient, method = "MP", min.vaf = 0.06)
 
     # Extract information from tree object. This will be a dataframe with samples as columns and mutations as rows.
