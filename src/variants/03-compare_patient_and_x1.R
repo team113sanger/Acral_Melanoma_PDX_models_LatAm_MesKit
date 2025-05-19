@@ -1,8 +1,10 @@
-files <- fs::dir_ls(
-    "/lustre/scratch124/casm/team113/projects/6633_PDX_models_Latin_America_WES/analysis/somatic_variants/release_v4/meskit/plots",
-    recurse = TRUE,
-    glob = "*_filt.csv*"
-)
+library(here)
+library(fs)
+library(readr)
+
+meskit_outdir <- here::here("results/variants/")
+
+files <- fs::dir_ls(meskit_outdir, recurse = TRUE, glob = "*_filt.csv$")
 
 all_samples <- readr::read_csv(files)
 all_samples <- all_samples |> dplyr::select(!`...1`)
@@ -57,9 +59,15 @@ for (patient in patient_ids) {
         c(patient, n_pdx_for_patient, x1_id, n_private_patient, n_private_x1, n_shared_patient_and_x1, n_public, n_total)
     )
 }
-colnames(patient_vs_x1_df) <- c("patient", "n_pdx_for_patient", "x1", "n_private_patient", "n_private_x1", "n_shared_patient_x1", "n_public", "n_total")
-
-write.csv(
-    patient_vs_x1_df,
-    "/lustre/scratch124/casm/team113/projects/6633_PDX_models_Latin_America_WES/analysis/somatic_variants/release_v4/meskit/plots/patient_vs_x1.csv"
+colnames(patient_vs_x1_df) <- c(
+    "patient",
+    "n_pdx_for_patient",
+    "x1",
+    "n_private_patient",
+    "n_private_x1",
+    "n_shared_patient_x1",
+    "n_public",
+    "n_total"
 )
+
+write.csv(patient_vs_x1_df, paste0(meskit_outdir, "patient_vs_x1.csv"))

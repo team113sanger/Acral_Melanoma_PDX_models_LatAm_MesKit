@@ -1,100 +1,38 @@
+library(here)
 library(MesKit)
 library(dplyr)
 library(ggpubr)
 library(stringr)
 library(logger)
-library(optparse)
-
-option_list <- list(
-    optparse::make_option(c("--maf"),
-        dest = "maf",
-        action = "store",
-        default = NA,
-        type = "character",
-        help = "Path to a MAF file for MesKit."
-    ),
-    optparse::make_option(c("--clinical"),
-        dest = "clinical",
-        action = "store",
-        default = NA,
-        type = "character",
-        help = "Path to a clinical file for MesKit."
-    ),
-    optparse::make_option(c("--metadata"),
-        dest = "metadata",
-        action = "store",
-        default = NA,
-        type = "character",
-        help = "Path to a metadata file."
-    ),
-    optparse::make_option(c("--cosmic"),
-        dest = "cosmic",
-        action = "store",
-        default = NA,
-        type = "character",
-        help = "Path to a COSMIC Cancer Gene Census file (csv format)."
-    ),
-    optparse::make_option(c("-o", "--outdir"),
-        dest = "outdir",
-        action = "store",
-        default = NA,
-        type = "character",
-        help = "Path to output directory."
-    )
-)
 
 logger::log_threshold(logger::INFO)
 
-parser <- optparse::OptionParser(
-    usage = "make_trees.R [options] --maf path/to/maf --clinical path/to/clinical.tsv --metadata path/to/metadata.txt --cosmic path/to/cosmic.csv ---outdir path/to/outdir",
-    option_list = option_list
-)
-arguments <- optparse::parse_args(parser, positional_arguments = 0)
+########################
+#### Defining paths ####
+########################
 
+data_dir <- here::here("data/variants/")
+maf_file <- paste0(data_dir, "6633_2729_3248-filtered_mutations_matched_allTum_keep_adjusted_for_meskit.maf")
+clinical_file <- paste0(data_dir, "6633_2729_3248-filtered_mutations_matched_allTum_keep_clinical_for_meskit.tsv")
+cosmic_file <- paste0(data_dir, "cancer_gene_census.v97.csv")
+
+mdata_dir <- here::here("metadata/")
+mdata_file <- paste0(mdata_dir, "6633_METADATA_table.tsv")
+
+outdir <- here::here("results/variants/")
 
 ######################
 #### Loading data ####
 ######################
 
 logger::log_info("Creating MAF object with MesKit...")
-maf <- arguments$options$maf
-clinical <- arguments$options$clinical
-if (!is.na(maf) && !is.na(clinical)) {
-    maf_ <- MesKit::readMaf(mafFile = maf, clinicalFile = clinical, refBuild = "hg38")
-} else if (is.na(maf) && !is.na(clinical)) {
-    error_message <- "A MAF file for MesKit has not been specified and is required!"
-    logger::log_fatal(error_message)
-    stop(error_message)
-} else if (!is.na(maf) && is.na(clinical)) {
-    error_message <- "A clinical file for MesKit has not been specified and is required!"
-    logger::log_fatal(error_message)
-    stop(error_message)
-} else {
-    error_message <- "Both the MAF and the clinical file for MesKit are missing and are required!"
-    logger::log_fatal(error_message)
-    stop(error_message)
-}
+maf <- MesKit::readMaf(mafFile = maf_file, clinicalFile = clinical_file, refBuild = "hg38")
 
 logger::log_info("Loading metadata...")
-metadata <- arguments$options$metadata
-metadata <- read.csv(metadata, sep = "\t")
+metadata <- read.csv(mdata_file, sep = "\t")
 
 logger::log_info("Loading COSMIC Cancer Gene Census data...")
-cosmic <- arguments$options$cosmic
-cgc <- read.csv(cosmic, header = TRUE, row.names = NULL, check.names = FALSE)
-
-# Check the last character in the directory path is a slash symbol ("/").
-outdir <- arguments$options$outdir
-if (substr(outdir, nchar(outdir), nchar(outdir)) != "/") {
-    outdir <- paste0(outdir, "/")
-}
-if (dir.exists(paste0(outdir, "plots/"))) {
-    logger::log_info(paste0(outdir, "plots/ already exists!"))
-} else {
-    logger::log_info(paste0("Creating ", outdir, "plots/"))
-    dir.create(paste0(outdir, "plots/"))
-}
-
+cgc <- read.csv(cosmic_file, header = TRUE, row.names = NULL, check.names = FALSE)
 
 ###################
 #### Functions ####
@@ -240,8 +178,8 @@ make_tree <- function(maf, patient) {
     bin_df <- process_tree_dataframe(bin_df, maf, patient)
 
     # Save dataframe to csv file.
-    write.csv(bin_df, paste0(outdir, "plots/", patient, "/", patient, "_table.csv"))
-    write.csv(bin_df[bin_df$mutation_status_in_sample != "0", ], paste0(outdir, "plots/", patient, "/", patient, "_table_filt.csv"))
+    write.csv(bin_df, paste0(outdir, patient, "/", patient, "_table.csv"))
+    write.csv(bin_df[bin_df$mutation_status_in_sample != "0", ], paste0(outdir, patient, "/", patient, "_table_filt.csv"))
 
     logger::log_info(paste0("Making tree for patient ", patient, "..."))
 
@@ -249,7 +187,7 @@ make_tree <- function(maf, patient) {
 
     ggpubr::ggexport(
         tree,
-        filename = paste0(outdir, "plots/", patient, "/", patient, "_tree.pdf"),
+        filename = paste0(outdir, patient, "/", patient, "_tree.pdf"),
         width = 8,
         height = 6,
         verbose = FALSE
@@ -261,7 +199,7 @@ make_tree <- function(maf, patient) {
 make_heatmap <- function(maf, patient) {
     logger::log_info(paste0("Making heatmap for patient ", patient, "..."))
 
-    heatmap <- mutHeatmap(
+    heatmap <- MesKit::mutHeatmap(
         maf,
         min.ccf = 0.04,
         use.ccf = FALSE,
@@ -271,7 +209,7 @@ make_heatmap <- function(maf, patient) {
 
     ggpubr::ggexport(
         heatmap,
-        filename = paste0(outdir, "plots/", patient, "/", patient, "_heatmap.pdf"),
+        filename = paste0(outdir, patient, "/", patient, "_heatmap.pdf"),
         width = 6,
         height = 6,
         verbose = FALSE
@@ -291,7 +229,7 @@ plot_tree_and_heatmap <- function(maf, patient) {
 
     ggpubr::ggexport(
         tree_plus_heatmap,
-        filename = paste0(outdir, "plots/", patient, "/", patient, "_tree_plus_heatmap.pdf"),
+        filename = paste0(outdir, patient, "/", patient, "_tree_plus_heatmap.pdf"),
         width = 12,
         height = 6,
         verbose = FALSE
@@ -338,11 +276,11 @@ process_patient <- function(maf, patient, action, column_for_split, samples_in_a
         id_B <- post_split[[3]]
 
         for (id in c(id_A, id_B)) {
-            dir.create(paste0(outdir, "plots/", id))
+            dir.create(paste0(outdir, id))
             plot_tree_and_heatmap(maf, id)
         }
     } else {
-        dir.create(paste0(outdir, "plots/", patient))
+        dir.create(paste0(outdir, patient))
         if (action == "filter_out") {
             maf[[patient]]@data <- maf[[patient]]@data[!(maf[[patient]]@data$Tumor_Sample_Label %in% filter_out), ]
         } else if (action == "keep") {
@@ -405,7 +343,7 @@ patients[["PD53364"]] <- list(action = "none", column_for_split = NA, samples_in
 
 for (patient in names(patients)) {
     process_patient(
-        maf_,
+        maf,
         patient,
         patients[[patient]]$action,
         patients[[patient]]$column_for_split,
