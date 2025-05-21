@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repository contains the code that was used to compare the patient and PDX-derived samples in terms of their variants and copy number alteration (CNA) events.
+This repository contains the code that was used to compare the patient and PDX-derived samples in terms of their somatic variants and copy number alteration (CNA) events.
 
 ## Required software and environment
 
