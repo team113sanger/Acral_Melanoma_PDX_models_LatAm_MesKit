@@ -89,7 +89,7 @@ The `data/` directory contains most of the input files that are required to run 
 
 The following software is required to run the analysis:
 
-- R (version 4.2.2)
+- R (version 4.2.2) - details on how to install it can be found [here](https://cran.r-project.org).
 - R packages:
     - `MesKit`
     - `here`
