@@ -115,7 +115,7 @@ if (!require("renv")) install.packages("renv")
 renv::restore()
 ```
 
-## Analysis
+## Analysis
 
 ### Phylogenetic trees and heatmaps from somatic variant calls
 
