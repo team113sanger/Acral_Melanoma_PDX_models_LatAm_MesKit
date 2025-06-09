@@ -87,7 +87,7 @@ The `data/` directory contains most of the input files that are required to run 
 
 ### COSMIC data
 
-The Cancer Gene Census (CGC) data from [COSMIC](https://cancer.sanger.ac.uk/cosmic) is licensed and therefore no included in this repository, but it can be retrieved from the link. Specifically, the file `cancer_gene_census.v97.csv` is expected by the script `02-make_trees.R` (more details on run to run the scripts present in this repository are explained in the `Analysis` section below).
+The Cancer Gene Census (CGC) data from [COSMIC](https://cancer.sanger.ac.uk/cosmic) is licensed and therefore not included in this repository, but it can be retrieved from the link. Specifically, the file `cancer_gene_census.v97.csv` is expected by the script `02-make_trees.R` (more details on run to run the scripts present in this repository are explained in the `Analysis` section below).
 
 ## Required software and environment
 
