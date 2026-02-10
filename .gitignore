@@ -1,2 +1,4 @@
 results/*/*_log.txt
 Rplots.pdf
+.Rprofile
+renv/*
