@@ -19,7 +19,7 @@ clinical_file <- paste0(data_dir, "variants/6633_2729_3248-filtered_mutations_ma
 cosmic_file <- paste0(data_dir, "cancer_gene_census.v97.csv")
 
 mdata_dir <- here::here("metadata/")
-mdata_file <- paste0(mdata_dir, "6633_METADATA_table.tsv")
+mdata_file <- paste0(mdata_dir, "6633_2729_3248_METADATA_PDX_from_Latin_America_WES.txt")
 
 outdir <- here::here("results/variants/")
 
@@ -31,7 +31,7 @@ logger::log_info("Creating MAF object with MesKit...")
 maf <- MesKit::readMaf(mafFile = maf_file, clinicalFile = clinical_file, refBuild = "hg38")
 
 logger::log_info("Loading metadata...")
-metadata <- read.csv(mdata_file, sep = "\t")
+metadata <- read.csv(mdata_file, sep = "\t", check.names = FALSE)
 
 logger::log_info("Loading COSMIC Cancer Gene Census data...")
 cgc <- read.csv(cosmic_file, header = TRUE, row.names = NULL, check.names = FALSE)
@@ -43,15 +43,9 @@ cgc <- read.csv(cosmic_file, header = TRUE, row.names = NULL, check.names = FALS
 make_readable <- function(maf, patient) {
     logger::log_info("Making sample IDs more readable...")
 
-    maf[[patient]]@data$Tumor_Sample_Label <- metadata$sample_ID_in_COSMIC[match(
-        maf[[patient]]@data$Tumor_Sample_Barcode, metadata$Tumor_Sample_Barcode
+    maf[[patient]]@data$Tumor_Sample_Label <- metadata$`Case ID`[match(
+        maf[[patient]]@data$Tumor_Sample_Barcode, metadata$final_sample_name_used
     )]
-
-    maf[[patient]]@data$Tumor_Sample_Label <- gsub("_tumor_skin_melanoma", "", maf[[patient]]@data$Tumor_Sample_Label)
-    maf[[patient]]@data$Tumor_Sample_Label <- gsub("_gDNA", "", maf[[patient]]@data$Tumor_Sample_Label)
-    maf[[patient]]@data$Tumor_Sample_Label <- gsub("_Lymph_node", "", maf[[patient]]@data$Tumor_Sample_Label)
-    maf[[patient]]@data$Tumor_Sample_Label <- gsub("_Tumour - local_recurrence", "", maf[[patient]]@data$Tumor_Sample_Label)
-    maf[[patient]]@data$Tumor_Sample_Label <- gsub("_Tumour - primary", "", maf[[patient]]@data$Tumor_Sample_Label)
 
     return(maf)
 }
@@ -285,8 +279,10 @@ process_patient <- function(maf, patient, action, column_for_split, samples_in_a
     } else {
         dir.create(paste0(outdir, patient))
         if (action == "filter_out") {
+            logger::log_info(paste0("Filtering out ", paste(filter_out, collapse = ","), "..."))
             maf[[patient]]@data <- maf[[patient]]@data[!(maf[[patient]]@data$Tumor_Sample_Label %in% filter_out), ]
         } else if (action == "keep") {
+            logger::log_info(paste0("Keeping ", paste(keep, collapse = ","), "..."))
             maf[[patient]]@data <- maf[[patient]]@data[maf[[patient]]@data$Tumor_Sample_Label %in% keep, ]
         }
         plot_tree_and_heatmap(maf, patient)
@@ -302,47 +298,32 @@ process_patient <- function(maf, patient, action, column_for_split, samples_in_a
 
 patients <- list()
 patients[["PD53330"]] <- list(action = "none", column_for_split = NA, samples_in_a = NA, filter_out = NA, keep = NA)
-patients[["PD53332"]] <- list(action = "filter_out", column_for_split = NA, samples_in_a = NA, filter_out = "AM003c", keep = NA)
+patients[["PD53332"]] <- list(action = "filter_out", column_for_split = NA, samples_in_a = NA, filter_out = c("AM003c_gDNA_tumour"), keep = NA)
 patients[["PD53333"]] <- list(action = "none", column_for_split = NA, samples_in_a = NA, filter_out = NA, keep = NA)
 patients[["PD53337"]] <- list(action = "none", column_for_split = NA, samples_in_a = NA, filter_out = NA, keep = NA)
-patients[["PD53343"]] <- list(
-    action = "split",
-    column_for_split = "Tumor_Sample_Barcode",
-    samples_in_a = c("PD53343h", "PD53343h_hum", "PD53343a", "PD53343a_hum", "PD53343d", "PD53343d_hum", "PD53343e", "PD53343e_hum"),
-    filter_out = NA,
-    keep = NA
-)
+patients[["PD53343"]] <- list(action = "split", column_for_split = "Tumor_Sample_Barcode", samples_in_a = c("PD53343h", "PD53343h_hum", "PD53343a", "PD53343a_hum", "PD53343d", "PD53343d_hum", "PD53343e", "PD53343e_hum"), filter_out = NA, keep = NA)
 patients[["PD53347"]] <- list(action = "none", column_for_split = NA, samples_in_a = NA, filter_out = NA, keep = NA)
-patients[["PD53349"]] <- list(
-    action = "split",
-    column_for_split = "Tumor_Sample_Label",
-    samples_in_a = c("AM021a", "AM021a-X1_PDX"),
-    filter_out = NA,
-    keep = NA
-)
-patients[["PD53350"]] <- list(
-    action = "split",
-    column_for_split = "Tumor_Sample_Label",
-    samples_in_a = c("AM022a", "AM022a-X1_PDX"),
-    filter_out = NA,
-    keep = NA
-)
-patients[["PD53352"]] <- list(
-    action = "split",
-    column_for_split = "Tumor_Sample_Label",
-    samples_in_a = c("AM025a", "AM025a-X1_PDX"),
-    filter_out = NA,
-    keep = NA
-)
-patients[["PD53357"]] <- list(
-    action = "keep",
-    column_for_split = NA,
-    samples_in_a = NA,
-    filter_out = NA,
-    keep = c("AM032b", "AM032b-X1_PDX")
-)
+patients[["PD53349"]] <- list(action = "split", column_for_split = "Tumor_Sample_Label", samples_in_a = c("AM021a_gDNA_tumour", "AM021a-X1_gDNA_tumour"), filter_out = NA, keep = NA)
+patients[["PD53350"]] <- list(action = "split", column_for_split = "Tumor_Sample_Label", samples_in_a = c("AM022a_gDNA_tumour", "AM022a-X1_gDNA_tumour"), filter_out = NA, keep = NA)
+patients[["PD53352"]] <- list(action = "split", column_for_split = "Tumor_Sample_Label", samples_in_a = c("AM025a_gDNA_tumour", "AM025a-X1_gDNA_tumour"), filter_out = NA, keep = NA)
+patients[["PD53355"]] <- list(action = "none", column_for_split = NA, samples_in_a = NA, filter_out = NA, keep = NA)
+patients[["PD53357"]] <- list(action = "keep", column_for_split = NA, samples_in_a = NA, filter_out = NA, keep = c("AM032b_gDNA_tumour", "AM032b-X1_gDNA_tumour"))
 patients[["PD53359"]] <- list(action = "none", column_for_split = NA, samples_in_a = NA, filter_out = NA, keep = NA)
 patients[["PD53364"]] <- list(action = "none", column_for_split = NA, samples_in_a = NA, filter_out = NA, keep = NA)
+patients[["PD70963"]] <- list(action = "none", column_for_split = NA, samples_in_a = NA, filter_out = NA, keep = NA)
+patients[["PD70964"]] <- list(action = "split", column_for_split = "Tumor_Sample_Barcode", samples_in_a = c("PD70964a", "PD70964d_hum"), filter_out = NA, keep = NA)
+patients[["PD70967"]] <- list(action = "none", column_for_split = NA, samples_in_a = NA, filter_out = NA, keep = NA)
+patients[["PD70968"]] <- list(action = "split", column_for_split = "Tumor_Sample_Barcode", samples_in_a = c("PD70968a", "PD70968d_hum"), filter_out = NA, keep = NA)
+patients[["PD70969"]] <- list(action = "none", column_for_split = NA, samples_in_a = NA, filter_out = NA, keep = NA)
+patients[["PD70970"]] <- list(action = "none", column_for_split = NA, samples_in_a = NA, filter_out = NA, keep = NA)
+patients[["PD70971"]] <- list(action = "filter_out", column_for_split = NA, samples_in_a = NA, filter_out = c("AM067a_X1_gDNA_tumour"), keep = NA)
+patients[["PD70972"]] <- list(action = "filter_out", column_for_split = NA, samples_in_a = NA, filter_out = c("AM068a_gDNA_tumour"), keep = NA)
+patients[["PD70973"]] <- list(action = "none", column_for_split = NA, samples_in_a = NA, filter_out = NA, keep = NA)
+patients[["PD70974"]] <- list(action = "none", column_for_split = NA, samples_in_a = NA, filter_out = NA, keep = NA)
+patients[["PD70975"]] <- list(action = "none", column_for_split = NA, samples_in_a = NA, filter_out = NA, keep = NA)
+patients[["PD70976"]] <- list(action = "filter_out", column_for_split = NA, samples_in_a = NA, filter_out = c("AM066b_gDNA_tumour"), keep = NA)
+patients[["PD70980"]] <- list(action = "none", column_for_split = NA, samples_in_a = NA, filter_out = NA, keep = NA)
+patients[["PD70982"]] <- list(action = "none", column_for_split = NA, samples_in_a = NA, filter_out = NA, keep = NA)
 
 for (patient in names(patients)) {
     process_patient(

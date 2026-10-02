@@ -10,42 +10,38 @@ library(tidyr)
 
 data_dir <- here::here("data/copy_number/")
 
-human_1st_model_files <- fs::dir_ls(paste0(data_dir, "segments/human/Sequenza_1stModels/"), recurse = TRUE, glob = "*_segments.txt$")
-human_alt_model_files <- fs::dir_ls(paste0(data_dir, "segments/human/Sequenza_AltModels/"), recurse = TRUE, glob = "*_segments.txt$")
-
-pdx_1st_model_files <- fs::dir_ls(paste0(data_dir, "segments/pdx/Sequenza_1stModels/"), recurse = TRUE, glob = "*_segments.txt$")
-pdx_alt_model_files <- fs::dir_ls(paste0(data_dir, "segments/pdx/Sequenza_AltModels/"), recurse = TRUE, glob = "*_segments.txt$")
-
-ploidy_file <- paste0(data_dir, "ploidy_table_jan2025_data.tsv")
+segments_files <- fs::dir_ls(paste0(data_dir, "segments/"), recurse = TRUE, glob = "*_segments.txt$")
+ploidy_file <- paste0(data_dir, "Adjusted_ploidy_table.tsv")
 
 #####################################
 #### Loading and processing data ####
 #####################################
 
-adjust_copynumber <- function(segments) {
+adjust_copynumber <- function(segments, ploidy_table) {
     segments <- segments |>
+        dplyr::rename(Sample = Tumor_Sample_Barcode) |>
         dplyr::left_join(
             ploidy_table,
-            by = dplyr::join_by(Tumor_Sample_Barcode)
+            by = dplyr::join_by(Sample)
         ) |>
-        dplyr::mutate(Ploidy = round(Ploidy)) |>
         dplyr::mutate(
             CopyNumber_adjusted = dplyr::case_when(
                 CopyNumber == 0 ~ 0, # Deletion
-                CopyNumber != 0 & CopyNumber < Ploidy ~ 1, #  Loss
-                CopyNumber == Ploidy ~ 2, # Neutral
-                CopyNumber > Ploidy & CopyNumber < (2 * Ploidy) ~ 3, # Gain
-                CopyNumber >= (2 * Ploidy) ~ 4, #  Amplification
+                CopyNumber != 0 & CopyNumber < mean_ploidy_adj ~ 1, #  Loss
+                CopyNumber == mean_ploidy_adj ~ 2, # Neutral
+                CopyNumber > mean_ploidy_adj & CopyNumber < (2 * mean_ploidy_adj) ~ 3, # Gain
+                CopyNumber >= (2 * mean_ploidy_adj) ~ 4, #  Amplification
             ),
             .before = CopyNumber
         ) |>
-        dplyr::select(!c(CopyNumber, Ploidy)) |>
-        dplyr::rename(CopyNumber = CopyNumber_adjusted)
+        dplyr::select(!c(CopyNumber, mean_ploidy_adj)) |>
+        dplyr::rename(CopyNumber = CopyNumber_adjusted) |>
+        dplyr::rename(Tumor_Sample_Barcode = Sample)
 
     return(segments)
 }
 
-load_copynumber <- function(files, ploidy, source) {
+load_copynumber <- function(files, ploidy_table) {
     segments <- readr::read_tsv(files, col_names = TRUE, id = "Tumor_Sample_Barcode") |>
         dplyr::mutate(
             Tumor_Sample_Barcode = stringr::str_remove(basename(Tumor_Sample_Barcode), "_segments.txt"),
@@ -70,52 +66,22 @@ load_copynumber <- function(files, ploidy, source) {
             Minor_CN
         )
 
-    segments <- adjust_copynumber(segments)
-
-    if (source == "pdx") {
-        segments <- segments |> dplyr::mutate(Tumor_Sample_Barcode = paste0(Tumor_Sample_Barcode, "_hum"))
-    }
+    segments <- adjust_copynumber(segments, ploidy_table)
 
     return(segments)
 }
 
-ploidy_table <- readr::read_table(ploidy_file)
-colnames(ploidy_table) <- c("Tumor_Sample_Barcode", "Ploidy")
+ploidy <- readr::read_table(ploidy_file)
 
-#  Load and adjust segments for human data.
-segments_human_1st_models <- load_copynumber(
-    files = human_1st_model_files,
-    ploidy = ploidy_table,
-    source = "human"
-)
-segments_human_alt_models <- load_copynumber(
-    files = human_alt_model_files,
-    ploidy = ploidy_table,
-    source = "human"
-)
-
-#  Load and adjust segments for PDX data.
-segments_pdx_1st_models <- load_copynumber(
-    files = pdx_1st_model_files,
-    ploidy = ploidy_table,
-    source = "pdx"
-)
-segments_pdx_alt_models <- load_copynumber(
-    files = pdx_alt_model_files,
-    ploidy = ploidy_table,
-    source = "pdx"
-)
-
-all_segments <- dplyr::bind_rows(
-    segments_human_1st_models,
-    segments_pdx_1st_models,
-    segments_human_alt_models,
-    segments_pdx_alt_models
+#  Load segments.
+segments <- load_copynumber(
+    files = segments_files,
+    ploidy_table = ploidy
 ) |> tidyr::drop_na()
 
 write.table(
-    all_segments,
-    file = paste0(data_dir, "combined_Human+PDX_with_1st+AltModels_segments_for_meskit.tsv"),
+    segments,
+    file = paste0(data_dir, "segments_for_meskit.tsv"),
     sep = "\t",
     quote = FALSE,
     row.names = FALSE,

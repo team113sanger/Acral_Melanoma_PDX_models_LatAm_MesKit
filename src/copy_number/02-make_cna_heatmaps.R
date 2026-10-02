@@ -7,10 +7,10 @@ library(ggpubr)
 ########################
 
 data_dir <- here::here("data/copy_number/")
-segments_file <- paste0(data_dir, "combined_Human+PDX_with_1st+AltModels_segments_for_meskit.tsv")
+segments_file <- paste0(data_dir, "segments_for_meskit.tsv")
 
 mdata_dir <- here::here("metadata/")
-mdata_file <- paste0(mdata_dir, "6633_METADATA_table.tsv")
+mdata_file <- paste0(mdata_dir, "6633_2729_3248_METADATA_PDX_from_Latin_America_WES.txt")
 
 outdir <- here::here("results/copy_number/")
 
@@ -22,7 +22,7 @@ outdir <- here::here("results/copy_number/")
 segments <- MesKit::readSegment(segFile = segments_file)
 
 #  Load metadata table.
-metadata <- read.csv(mdata_file, sep = "\t")
+metadata <- read.csv(mdata_file, sep = "\t", check.names = FALSE)
 
 #################################
 #### Generating CNA heatmaps ####
@@ -36,14 +36,9 @@ for (patient in segments %>% names()) {
     dir.create(paste0(outdir, patient))
 
     # Redefine the Tumor_Sample_Label IDs.
-    segments[[patient]]$Tumor_Sample_Label <- metadata$sample_ID_in_COSMIC[match(
-        segments[[patient]]$Tumor_Sample_Barcode, metadata$Tumor_Sample_Barcode
+    segments[[patient]]$Tumor_Sample_Label <- metadata$`Case ID`[match(
+        segments[[patient]]$Tumor_Sample_Barcode, metadata$final_sample_name_used
     )]
-
-    # Adjust Tumor_Sample_Label IDs to be shorter and fit better in the plots later on.
-    for (id_substring in c("_tumor_skin_melanoma", "_gDNA", "_Lymph_node", "_Tumour - local_recurrence", "_Tumour - primary")) {
-        segments[[patient]]$Tumor_Sample_Label <- gsub(id_substring, "", segments[[patient]]$Tumor_Sample_Label)
-    }
 
     # Create CNA heatmap.
     plot <- MesKit::plotCNA(

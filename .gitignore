@@ -3,3 +3,4 @@ Rplots.pdf
 .Rprofile
 renv/*
 *.DS_Store
+data/cancer_gene_census.v97.csv
