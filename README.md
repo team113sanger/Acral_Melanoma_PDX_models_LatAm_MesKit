@@ -11,26 +11,6 @@ This repository contains the code that was used to compare the patient and PDX-d
 ```bash
 .
 ├── data
-│   ├── cancer_gene_census.v97.csv
-│   ├── copy_number
-│   └── variants
-├── LICENSE
-├── metadata
-│   └── 6633_2729_3248_METADATA_PDX_from_Latin_America_WES.txt
-├── README.md
-├── renv.lock
-├── results
-│   ├── copy_number
-│   └── variants
-├── Rplots.pdf
-└── src
-    ├── copy_number
-    └── variants
-
-10 directories, 6 files
-jb62@farm22-head2:/lustre/scratch125/casm/teams/team113/projects/6633_Acral_melanoma_cell_line_CNAs/Acral_Melanoma_PDX_models_LatAm_MesKit$ tree -L 3
-.
-├── data
 │   ├── copy_number
 │   │   ├── Adjusted_ploidy_table.tsv
 │   │   ├── segments
