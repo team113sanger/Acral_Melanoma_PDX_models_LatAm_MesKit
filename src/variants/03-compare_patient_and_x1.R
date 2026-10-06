@@ -10,11 +10,10 @@ library(cowplot)
 meskit_outdir <- here::here("results/variants/")
 files <- fs::dir_ls(meskit_outdir, recurse = TRUE, glob = "*_filt.csv$")
 all_samples <- readr::read_csv(files)
-all_samples <- all_samples |> dplyr::select(!`...1`)
 
 # Get patient IDs.
-all_samples$sample_interpretable <- gsub("_X", "-X", all_samples$sample_interpretable)
-patient_ids <- all_samples$sample_interpretable[!grepl("-X", all_samples$sample_interpretable)] |> unique()
+all_samples$sample <- gsub("_X", "-X", all_samples$sample)
+patient_ids <- all_samples$sample[!grepl("-X", all_samples$sample)] |> unique()
 
 # Create empty dataframe to store data.
 patient_vs_x1_df_detailed <- data.frame(matrix(nrow = 0, ncol = 11))
@@ -24,10 +23,8 @@ patient_vs_x1_df_simplified <- data.frame(matrix(nrow = 0, ncol = 5))
 for (patient in patient_ids) {
   print(paste0("Patient: ", patient))
 
-  patient_ <- gsub("_gDNA_tumour", "", patient)
-
   # Get the sample IDs for PDXs available for the given patient.
-  pdx_ids_for_patient <- all_samples$sample_interpretable[grepl(paste0(patient_, "-X"), all_samples$sample_interpretable)] |>
+  pdx_ids_for_patient <- all_samples$sample[grepl(paste0(patient, "-X"), all_samples$sample)] |>
     unique()
 
   print(paste0("PDXs: ", paste(pdx_ids_for_patient, collapse = ",")))
@@ -36,13 +33,13 @@ for (patient in patient_ids) {
   n_pdx_for_patient <- length(pdx_ids_for_patient)
 
   # Set the sample ID for PDX-X1.
-  x1_id <- paste0(patient_, "-X1_gDNA_tumour")
+  x1_id <- paste0(patient, "-X1")
 
   # If there isn't a PDX-X1 for the given patient, move on to the next patient.
-  if (!(x1_id %in% all_samples$sample_interpretable)) next
+  if (!(x1_id %in% all_samples$sample)) next
 
   # Subset original dataframe to keep only results related to the given patient and its PDX-X1.
-  patient_and_x1 <- all_samples |> dplyr::filter(sample_interpretable %in% c(patient, x1_id))
+  patient_and_x1 <- all_samples |> dplyr::filter(sample %in% c(patient, x1_id))
 
   ############################################
   #### Variants only found in the patient ####
@@ -52,7 +49,7 @@ for (patient in patient_ids) {
   n_private_patient <- patient_and_x1 |>
     # Subset the dataframe to keep only rows related to the given patient and that contain private
     # mutations (only present in the patient).
-    dplyr::filter(sample_interpretable == patient & mutation_type == "Private") |>
+    dplyr::filter(sample == patient & mutation_type == "Private") |>
     # Count the mutations.
     dplyr::count(mutation_type) |>
     dplyr::select(n) |>
@@ -68,7 +65,7 @@ for (patient in patient_ids) {
   n_private_x1 <- patient_and_x1 |>
     # Subset the dataframe to keep only rows related to the given PDX-X1 and that contain private
     # mutations (only present in PDX-X1).
-    dplyr::filter(sample_interpretable == x1_id & mutation_type == "Private") |>
+    dplyr::filter(sample == x1_id & mutation_type == "Private") |>
     # Count the mutations.
     dplyr::count(mutation_type) |>
     dplyr::select(n) |>
@@ -84,7 +81,7 @@ for (patient in patient_ids) {
   n_shared_patient_and_x1 <- patient_and_x1 |>
     # Subset the dataframe to keep only rows related to the given patient and that contain shared
     # mutations.
-    dplyr::filter(sample_interpretable == patient & mutation_type == "Shared") |>
+    dplyr::filter(sample == patient & mutation_type == "Shared") |>
     # Subset the dataframe again to keep only rows that contain mutations exclusively shared between patient and PDX-X1.
     dplyr::filter(sample_ids_mutation_is_present %in% c(paste0(patient, ", ", x1_id), paste0(x1_id, ", ", patient))) |>
     # Count the mutations.
@@ -104,11 +101,11 @@ for (patient in patient_ids) {
   sub_df <- patient_and_x1 |>
     # Subset the dataframe to keep only rows related to the given patient and that contain shared
     # mutations.
-    dplyr::filter(sample_interpretable == patient & mutation_type == "Shared")
+    dplyr::filter(sample == patient & mutation_type == "Shared")
 
   # Each row is a different shared mutation for a set of samples; iterate over each...
   for (sample_list in sub_df$sample_ids_mutation_is_present) {
-    sample_ids <- strsplit(sample_list, ",\\s*")[[1]]
+    sample_ids <- strsplit(sample_list, "/")[[1]]
 
     # If both patient and PDX-X1 are present in the set of samples...
     if (patient %in% sample_ids && x1_id %in% sample_ids) {
@@ -131,11 +128,11 @@ for (patient in patient_ids) {
   sub_df <- patient_and_x1 |>
     # Subset the dataframe to keep only rows related to the given patient and that contain shared
     # mutations.
-    dplyr::filter(sample_interpretable == patient & mutation_type == "Shared")
+    dplyr::filter(sample == patient & mutation_type == "Shared")
 
   # Each row is a different shared mutation for a set of samples; iterate over each...
   for (sample_list in sub_df$sample_ids_mutation_is_present) {
-    sample_ids <- strsplit(sample_list, ",\\s*")[[1]]
+    sample_ids <- strsplit(sample_list, "/")[[1]]
 
     # If the patient is present in the set of samples, but PDX-X1 is not...
     if (patient %in% sample_ids && !(x1_id %in% sample_ids)) {
@@ -153,11 +150,11 @@ for (patient in patient_ids) {
   sub_df <- patient_and_x1 |>
     # Subset the dataframe to keep only rows related to the given patient and that contain shared
     # mutations.
-    dplyr::filter(sample_interpretable == x1_id & mutation_type == "Shared")
+    dplyr::filter(sample == x1_id & mutation_type == "Shared")
 
   # Each row is a different shared mutation for a set of samples; iterate over each...
   for (sample_list in sub_df$sample_ids_mutation_is_present) {
-    sample_ids <- strsplit(sample_list, ",\\s*")[[1]]
+    sample_ids <- strsplit(sample_list, "/")[[1]]
 
     # If PDX-X1 is present in the set of samples, but the patient is not...
     if (!(patient %in% sample_ids) && x1_id %in% sample_ids) {
@@ -170,7 +167,7 @@ for (patient in patient_ids) {
   #########################
 
   n_public <- patient_and_x1 |>
-    dplyr::filter(sample_interpretable == patient & mutation_type == "Public") |>
+    dplyr::filter(sample == patient & mutation_type == "Public") |>
     dplyr::count(mutation_type) |>
     dplyr::select(n) |>
     as.numeric()
@@ -189,9 +186,9 @@ for (patient in patient_ids) {
   patient_vs_x1_df_detailed <- rbind(
     patient_vs_x1_df_detailed,
     c(
-      patient_,
+      patient,
       n_pdx_for_patient,
-      paste0(pdx_ids_for_patient, collapse = ","),
+      paste0(pdx_ids_for_patient, collapse = "/"),
       x1_id,
       n_private_patient,
       n_private_x1,
@@ -210,7 +207,7 @@ for (patient in patient_ids) {
   patient_vs_x1_df_simplified <- rbind(
     patient_vs_x1_df_simplified,
     c(
-      patient_,
+      patient,
       x1_id,
       n_total_found_in_patient_but_not_in_x1,
       n_total_found_in_x1_but_not_in_patient,
@@ -241,8 +238,8 @@ colnames(patient_vs_x1_df_simplified) <- c(
   "n_variants_shared"
 )
 
-write.csv(patient_vs_x1_df_detailed, paste0(meskit_outdir, "patient_vs_x1_detailed.csv"))
-write.csv(patient_vs_x1_df_simplified, paste0(meskit_outdir, "patient_vs_x1_simplified.csv"))
+patient_vs_x1_df_detailed |> readr::write_csv(paste0(meskit_outdir, "patient_vs_x1_detailed.csv"))
+patient_vs_x1_df_simplified |> readr::write_csv(paste0(meskit_outdir, "patient_vs_x1_simplified.csv"))
 
 p1 <- patient_vs_x1_df_detailed |>
   dplyr::select(!c(n_pdx_for_patient, pdx_sample_ids)) |>
@@ -323,6 +320,6 @@ ggsave(
   plot = plots_combined,
   filename = paste0(meskit_outdir, "patient_vs_x1_plots.png"),
   dpi = 600,
-  width = 12.0,
+  width = 15.0,
   height = 8.0
 )

@@ -35,17 +35,11 @@ for (patient in segments %>% names()) {
     # Create subdirectory for a given patient.
     dir.create(paste0(outdir, patient))
 
-    # Redefine the Tumor_Sample_Label IDs.
-    segments[[patient]]$Tumor_Sample_Label <- metadata$`Case ID`[match(
-        segments[[patient]]$Tumor_Sample_Barcode, metadata$final_sample_name_used
-    )]
-
     # Create CNA heatmap.
     plot <- MesKit::plotCNA(
         segments,
         patient.id = patient,
         refBuild = "hg38",
-        use.tumorSampleLabel = TRUE,
         sample.bar.height = 0.25,
         chrom.bar.height = 0.1
     )

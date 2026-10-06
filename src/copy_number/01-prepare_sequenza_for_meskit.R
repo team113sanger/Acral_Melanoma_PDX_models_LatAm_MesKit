@@ -3,15 +3,18 @@ library(MesKit)
 library(ggpubr)
 library(dplyr)
 library(tidyr)
+library(stringr)
 
 ########################
 #### Defining paths ####
 ########################
 
 data_dir <- here::here("data/copy_number/")
-
 segments_files <- fs::dir_ls(paste0(data_dir, "segments/"), recurse = TRUE, glob = "*_segments.txt$")
 ploidy_file <- paste0(data_dir, "Adjusted_ploidy_table.tsv")
+
+mdata_dir <- here::here("metadata/")
+mdata_file <- paste0(mdata_dir, "6633_2729_3248_METADATA_PDX_from_Latin_America_WES.txt")
 
 #####################################
 #### Loading and processing data ####
@@ -41,7 +44,7 @@ adjust_copynumber <- function(segments, ploidy_table) {
     return(segments)
 }
 
-load_copynumber <- function(files, ploidy_table) {
+load_copynumber <- function(files, metadata, ploidy_table) {
     segments <- readr::read_tsv(files, col_names = TRUE, id = "Tumor_Sample_Barcode") |>
         dplyr::mutate(
             Tumor_Sample_Barcode = stringr::str_remove(basename(Tumor_Sample_Barcode), "_segments.txt"),
@@ -68,14 +71,27 @@ load_copynumber <- function(files, ploidy_table) {
 
     segments <- adjust_copynumber(segments, ploidy_table)
 
+    segments$Patient_ID <- metadata$patient_id[match(
+        segments$Tumor_Sample_Barcode, metadata$final_sample_name_used
+    )]
+
+    segments$Tumor_Sample_Barcode <- metadata$`Case ID`[match(
+        segments$Tumor_Sample_Barcode, metadata$final_sample_name_used
+    )]
+    segments$Tumor_Sample_Barcode <- gsub("_gDNA_tumour", "", segments$Tumor_Sample_Barcode)
+
     return(segments)
 }
 
 ploidy <- readr::read_table(ploidy_file)
 
+metadata <- read.csv(mdata_file, sep = "\t", check.names = FALSE)
+metadata$patient_id <- stringr::str_extract(metadata$`Case ID`, "^AM[0-9]+[ab]?")
+
 #  Load segments.
 segments <- load_copynumber(
     files = segments_files,
+    metadata = metadata,
     ploidy_table = ploidy
 ) |> tidyr::drop_na()
 

@@ -187,19 +187,6 @@ LvdW ID	Case ID	Collaborator	Country	HMDMC	Diagnosis	Phenotype	T/N linked	Tissue
 186	AM022b-X2-Cell	Patricia Possik	Brazil	18/014	Cell_line	T		skin	Acral site	Acral site	M	M	0				1	1	1		N	Submitted	PD70985c	Yes	-	-	NA	P2	AM022b-X2-Cell	Cell_line	batch2	Keep _it_paper	Tumour_lymph_node_metastasis	P2	NA	6633	2729	NA	NA	2729	PD70985c	NA	NA	NA	NA								
 187	AM0104_gDNA_tumour	Patricia Possik	Brazil	18/014	skin melanoma	T		skin	Acral site	Acral site	P	M	0				1	1	1		N	Submitted	PD70986a	Yes	PR70986a	Yes	NA	NA	AM0104_gDNA_tumour	Tumour	batch2	Remove	Tumour_primary	NA	NA	6633	2729	NA	NA	2729	PD70986a	PR70986a	PD70986a	AM0104a_gDNA_tumour	Remove								
 188	AM104_patient_gDNA_blood	Patricia Possik	Brazil	18/014	Blood	N		Blood	Acral site	Acral site	-	M	0				1	1	1		N	Submitted	PD70986b2	Yes	-	-	NA	NA	AM104_patient_gDNA_blood	Normal	batch3	Remove	Peripheral_blood	NA	NA	6633	2729	NA	NA	2729	PD70986b2	NA	NA	NA	NA								
-189	AM0104a- X1_gDNA_tumour	Patricia Possik	Brazil	18/014	skin melanoma / patient-derived xenograft	T		skin	Acral site	Acral site	P	M	0				1	1	1		N	Submitted	PD70986c	Yes	PR70986c	Yes	NA	P1	AM0104a- X1_gDNA_tumour	PDX	batch2	Remove	Tumour_primary	P1	PD70986c_hum	6633	2729	8130	3248	3248	PD70986c_hum	PR70986c_hum	PD70986c	AM0104a_ X1_gDNA_tumour	Remove								
-190	AM0104a-X1- Cell	Patricia Possik	Brazil	18/014	Cell_line	T		skin	Acral site	Acral site	P	M	0				1	1	1		N	Submitted	PD70986d	Yes	PR70986d	Yes	NA	P1	AM0104a-X1- Cell	Cell_line	batch2	Remove	Tumour_primary	P1	NA	6633	2729	NA	NA	2729	PD70986d	PR70986d	PD70986d	AM0104_ X1_gDNA_cell	Remove								
-191	AM032c-X1_gDNA_tumour	Patricia Possik	Brazil	18/014	skin melanoma / patient-derived xenograft	T		skin	Acral site	Acral site	M	F	0				1	1	1		N	Submitted	PD70987a	Yes	PR70987a	Yes	NA	P1	AM032c-X1_gDNA_tumour	PDX	batch2	Keep _it_paper	Tumour_lymph_node_metastasis	P1	PD70987a_hum	6633	2729	8130	3248	3248	PD70987a_hum	PR70987a_hum	PD70987a	AM032c_ X1_gDNA_tumour	Keep _it_paper								
-																																																					
-																																																					
-																																																					
-																																																					
-																																																					
-																																																					
-																																																					
-																																																					
-																																																					
-																																																					
-																																																					
-																																																					
-																																																					
+189	AM0104a-X1_gDNA_tumour	Patricia Possik	Brazil	18/014	skin melanoma / patient-derived xenograft	T		skin	Acral site	Acral site	P	M	0				1	1	1		N	Submitted	PD70986c	Yes	PR70986c	Yes	NA	P1	AM0104a- X1_gDNA_tumour	PDX	batch2	Remove	Tumour_primary	P1	PD70986c_hum	6633	2729	8130	3248	3248	PD70986c_hum	PR70986c_hum	PD70986c	AM0104a_ X1_gDNA_tumour	Remove								
+190	AM0104a-X1-Cell	Patricia Possik	Brazil	18/014	Cell_line	T		skin	Acral site	Acral site	P	M	0				1	1	1		N	Submitted	PD70986d	Yes	PR70986d	Yes	NA	P1	AM0104a-X1- Cell	Cell_line	batch2	Remove	Tumour_primary	P1	NA	6633	2729	NA	NA	2729	PD70986d	PR70986d	PD70986d	AM0104_ X1_gDNA_cell	Remove								
+191	AM032c-X1_gDNA_tumour	Patricia Possik	Brazil	18/014	skin melanoma / patient-derived xenograft	T		skin	Acral site	Acral site	M	F	0				1	1	1		N	Submitted	PD70987a	Yes	PR70987a	Yes	NA	P1	AM032c-X1_gDNA_tumour	PDX	batch2	Keep _it_paper	Tumour_lymph_node_metastasis	P1	PD70987a_hum	6633	2729	8130	3248	3248	PD70987a_hum	PR70987a_hum	PD70987a	AM032c_ X1_gDNA_tumour	Keep _it_paper																																																							

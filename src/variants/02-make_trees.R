@@ -30,6 +30,9 @@ outdir <- here::here("results/variants/")
 logger::log_info("Creating MAF object with MesKit...")
 maf <- MesKit::readMaf(mafFile = maf_file, clinicalFile = clinical_file, refBuild = "hg38")
 
+logger::log_info("Loading clinical file...")
+clinical <- read.csv(clinical_file, sep = "\t", check.names = FALSE)
+
 logger::log_info("Loading metadata...")
 metadata <- read.csv(mdata_file, sep = "\t", check.names = FALSE)
 
@@ -39,16 +42,6 @@ cgc <- read.csv(cosmic_file, header = TRUE, row.names = NULL, check.names = FALS
 ###################
 #### Functions ####
 ###################
-
-make_readable <- function(maf, patient) {
-    logger::log_info("Making sample IDs more readable...")
-
-    maf[[patient]]@data$Tumor_Sample_Label <- metadata$`Case ID`[match(
-        maf[[patient]]@data$Tumor_Sample_Barcode, metadata$final_sample_name_used
-    )]
-
-    return(maf)
-}
 
 add_n_samples_mutation_is_present <- function(df) {
     logger::log_info("Counting in how many samples each mutation is present...")
@@ -73,8 +66,8 @@ add_sample_ids_mutation_is_present <- function(df) {
         subset <- df[df$event == df$event[x], ]
 
         #  Get sample IDs of samples that bear the mutation.
-        sample_ids <- unique(subset$sample_interpretable[subset$mutation_status_in_sample == 1]) %>%
-            paste(collapse = ", ")
+        sample_ids <- unique(subset$sample[subset$mutation_status_in_sample == 1]) %>%
+            paste(collapse = "/")
 
         return(sample_ids)
     })
@@ -121,8 +114,12 @@ add_cosmic_info <- function(df) {
     return(df)
 }
 
-process_tree_dataframe <- function(tree_df, maf, patient) {
+process_tree_dataframe <- function(tree, maf, patient) {
     logger::log_info("Extracting mutation info...")
+
+    # Extract information from the tree object.
+    # This will be a dataframe with samples as columns and mutations as rows.
+    tree_df <- as.data.frame(tree@binary.matrix)
 
     #  Create an empty dataframe, where rearranged information from tree_df will be stored.
     df <- data.frame()
@@ -140,14 +137,14 @@ process_tree_dataframe <- function(tree_df, maf, patient) {
             df <- rbind(df, c(sample, event, gene, location, mutation, tree_df[event, sample]))
         }
     }
+
+    # Rename columns.
     colnames(df) <- c("sample", "event", "gene", "location", "mutation", "mutation_status_in_sample")
 
-    #  Remove column called "NORMAL" as this is just a "fake" column.
+    # Remove column called "NORMAL" as this is just a "fake" column.
     df <- df[df$sample != "NORMAL", ]
 
-    # Add interpretable sample IDs to the dataframe.
-    df$sample_interpretable <- maf[[patient]]@data$Tumor_Sample_Label[match(df$sample, maf[[patient]]@data$Tumor_Sample_Barcode)]
-
+    #  Add other columns.
     df <- add_n_samples_mutation_is_present(df)
     df <- add_sample_ids_mutation_is_present(df)
     df <- add_mutation_type(df)
@@ -155,33 +152,44 @@ process_tree_dataframe <- function(tree_df, maf, patient) {
 
     # Reorder dataframe columns.
     df <- df[, c(
-        "sample", "sample_interpretable",
-        "event", "gene", "cosmic_cgc_role_in_cancer",
+        "sample", "event", "gene", "cosmic_cgc_role_in_cancer",
         "cosmic_cgc_tumour_types_somatic", "cosmic_cgc_tumour_types_germline",
         "location", "mutation", "mutation_status_in_sample",
         "mutation_type", "n_samples_mutation_is_present",
         "sample_ids_mutation_is_present"
     )]
 
-    return(df)
+    # Save dataframes to csv files.
+
+    df_path <- paste0(outdir, patient, "/", patient, "_table.csv")
+    df |> readr::write_csv(file = df_path)
+
+    df_filt_path <- paste0(outdir, patient, "/", patient, "_table_filt.csv")
+    df |>
+        dplyr::filter(mutation_status_in_sample != "0") |>
+        readr::write_csv(file = df_filt_path)
 }
 
 make_tree <- function(maf, patient) {
-    set.seed(42, kind = "L'Ecuyer-CMRG")
-    tree <- MesKit::getPhyloTree(maf, patient.id = patient, method = "MP", min.vaf = 0.06)
-
-    # Extract information from tree object. This will be a dataframe with samples as columns and mutations as rows.
-    bin_df <- as.data.frame(tree@binary.matrix)
-    bin_df <- process_tree_dataframe(bin_df, maf, patient)
-
-    # Save dataframe to csv file.
-    write.csv(bin_df, paste0(outdir, patient, "/", patient, "_table.csv"))
-    write.csv(bin_df[bin_df$mutation_status_in_sample != "0", ], paste0(outdir, patient, "/", patient, "_table_filt.csv"))
-
     logger::log_info(paste0("Making tree for patient ", patient, "..."))
 
+    #  Set seed for reproducibility.
+    set.seed(42, kind = "L'Ecuyer-CMRG")
+
+    #  Generate tree.
+    tree <- MesKit::getPhyloTree(maf, patient.id = patient, method = "MP", min.vaf = 0.06)
+
+    #  Process the tree data.
+    process_tree_dataframe(
+        tree = tree,
+        maf = maf,
+        patient = patient
+    )
+
+    # Plot tree.
     tree <- MesKit::plotPhyloTree(tree, use.tumorSampleLabel = TRUE)
 
+    # Save plot to output file.
     ggpubr::ggexport(
         tree,
         filename = paste0(outdir, patient, "/", patient, "_tree.pdf"),
@@ -233,60 +241,11 @@ plot_tree_and_heatmap <- function(maf, patient) {
     )
 }
 
-split_a_and_b <- function(maf, patient, samples_in_a) {
-    logger::log_info(paste0("Splitting data for patient ", patient, "..."))
-
-    id_A <- paste(patient, "(A)", sep = "_")
-    id_B <- paste(patient, "(B)", sep = "_")
-
-    if (TRUE %in% grep("PD", samples_in_a)) {
-        maf[[patient]]@data$Patient_ID[maf[[patient]]@data$Tumor_Sample_Barcode %in% samples_in_a] <- id_A
-        maf[[patient]]@data$Patient_ID[!(maf[[patient]]@data$Tumor_Sample_Barcode %in% samples_in_a)] <- id_B
-    } else if (TRUE %in% grep("AM", samples_in_a)) {
-        maf[[patient]]@data$Patient_ID[maf[[patient]]@data$Tumor_Sample_Label %in% samples_in_a] <- id_A
-        maf[[patient]]@data$Patient_ID[!(maf[[patient]]@data$Tumor_Sample_Label %in% samples_in_a)] <- id_B
-    } else {
-        error_message <- paste0("Invalid sample IDs were provided to the function split_a_and_b()")
-        logger::log_fatal(error_message)
-        stop(error_message)
-    }
-
-    maf[[id_A]] <- maf[[patient]]
-    maf[[id_A]]@data <- maf[[id_A]]@data |> dplyr::filter(Patient_ID == as.name(id_A))
-
-    maf[[id_B]] <- maf[[patient]]
-    maf[[id_B]]@data <- maf[[id_B]]@data |> dplyr::filter(Patient_ID == as.name(id_B))
-
-    return(list(maf, id_A, id_B))
-}
-
-process_patient <- function(maf, patient, action, column_for_split, samples_in_a, filter_out, keep) {
+process_patient <- function(maf, patient) {
     logger::log_info(paste0("Processing data of patient ", patient, "..."))
 
-    maf <- make_readable(maf, patient)
-
-    if (action == "split") {
-        post_split <- split_a_and_b(maf, patient, samples_in_a)
-
-        maf <- post_split[[1]]
-        id_A <- post_split[[2]]
-        id_B <- post_split[[3]]
-
-        for (id in c(id_A, id_B)) {
-            dir.create(paste0(outdir, id))
-            plot_tree_and_heatmap(maf, id)
-        }
-    } else {
-        dir.create(paste0(outdir, patient))
-        if (action == "filter_out") {
-            logger::log_info(paste0("Filtering out ", paste(filter_out, collapse = ","), "..."))
-            maf[[patient]]@data <- maf[[patient]]@data[!(maf[[patient]]@data$Tumor_Sample_Label %in% filter_out), ]
-        } else if (action == "keep") {
-            logger::log_info(paste0("Keeping ", paste(keep, collapse = ","), "..."))
-            maf[[patient]]@data <- maf[[patient]]@data[maf[[patient]]@data$Tumor_Sample_Label %in% keep, ]
-        }
-        plot_tree_and_heatmap(maf, patient)
-    }
+    dir.create(paste0(outdir, patient))
+    plot_tree_and_heatmap(maf, patient)
 
     logger::log_info(paste0("Finished processing data of patient ", patient, "!"))
     cat("\n")
@@ -296,43 +255,6 @@ process_patient <- function(maf, patient, action, column_for_split, samples_in_a
 #### Organising data ####
 #########################
 
-patients <- list()
-patients[["PD53330"]] <- list(action = "none", column_for_split = NA, samples_in_a = NA, filter_out = NA, keep = NA)
-patients[["PD53332"]] <- list(action = "filter_out", column_for_split = NA, samples_in_a = NA, filter_out = c("AM003c_gDNA_tumour"), keep = NA)
-patients[["PD53333"]] <- list(action = "none", column_for_split = NA, samples_in_a = NA, filter_out = NA, keep = NA)
-patients[["PD53337"]] <- list(action = "none", column_for_split = NA, samples_in_a = NA, filter_out = NA, keep = NA)
-patients[["PD53343"]] <- list(action = "split", column_for_split = "Tumor_Sample_Barcode", samples_in_a = c("PD53343h", "PD53343h_hum", "PD53343a", "PD53343a_hum", "PD53343d", "PD53343d_hum", "PD53343e", "PD53343e_hum"), filter_out = NA, keep = NA)
-patients[["PD53347"]] <- list(action = "none", column_for_split = NA, samples_in_a = NA, filter_out = NA, keep = NA)
-patients[["PD53349"]] <- list(action = "split", column_for_split = "Tumor_Sample_Label", samples_in_a = c("AM021a_gDNA_tumour", "AM021a-X1_gDNA_tumour"), filter_out = NA, keep = NA)
-patients[["PD53350"]] <- list(action = "split", column_for_split = "Tumor_Sample_Label", samples_in_a = c("AM022a_gDNA_tumour", "AM022a-X1_gDNA_tumour"), filter_out = NA, keep = NA)
-patients[["PD53352"]] <- list(action = "split", column_for_split = "Tumor_Sample_Label", samples_in_a = c("AM025a_gDNA_tumour", "AM025a-X1_gDNA_tumour"), filter_out = NA, keep = NA)
-patients[["PD53355"]] <- list(action = "none", column_for_split = NA, samples_in_a = NA, filter_out = NA, keep = NA)
-patients[["PD53357"]] <- list(action = "keep", column_for_split = NA, samples_in_a = NA, filter_out = NA, keep = c("AM032b_gDNA_tumour", "AM032b-X1_gDNA_tumour"))
-patients[["PD53359"]] <- list(action = "none", column_for_split = NA, samples_in_a = NA, filter_out = NA, keep = NA)
-patients[["PD53364"]] <- list(action = "none", column_for_split = NA, samples_in_a = NA, filter_out = NA, keep = NA)
-patients[["PD70963"]] <- list(action = "none", column_for_split = NA, samples_in_a = NA, filter_out = NA, keep = NA)
-patients[["PD70964"]] <- list(action = "split", column_for_split = "Tumor_Sample_Barcode", samples_in_a = c("PD70964a", "PD70964d_hum"), filter_out = NA, keep = NA)
-patients[["PD70967"]] <- list(action = "none", column_for_split = NA, samples_in_a = NA, filter_out = NA, keep = NA)
-patients[["PD70968"]] <- list(action = "split", column_for_split = "Tumor_Sample_Barcode", samples_in_a = c("PD70968a", "PD70968d_hum"), filter_out = NA, keep = NA)
-patients[["PD70969"]] <- list(action = "none", column_for_split = NA, samples_in_a = NA, filter_out = NA, keep = NA)
-patients[["PD70970"]] <- list(action = "none", column_for_split = NA, samples_in_a = NA, filter_out = NA, keep = NA)
-patients[["PD70971"]] <- list(action = "filter_out", column_for_split = NA, samples_in_a = NA, filter_out = c("AM067a_X1_gDNA_tumour"), keep = NA)
-patients[["PD70972"]] <- list(action = "filter_out", column_for_split = NA, samples_in_a = NA, filter_out = c("AM068a_gDNA_tumour"), keep = NA)
-patients[["PD70973"]] <- list(action = "none", column_for_split = NA, samples_in_a = NA, filter_out = NA, keep = NA)
-patients[["PD70974"]] <- list(action = "none", column_for_split = NA, samples_in_a = NA, filter_out = NA, keep = NA)
-patients[["PD70975"]] <- list(action = "none", column_for_split = NA, samples_in_a = NA, filter_out = NA, keep = NA)
-patients[["PD70976"]] <- list(action = "filter_out", column_for_split = NA, samples_in_a = NA, filter_out = c("AM066b_gDNA_tumour"), keep = NA)
-patients[["PD70980"]] <- list(action = "none", column_for_split = NA, samples_in_a = NA, filter_out = NA, keep = NA)
-patients[["PD70982"]] <- list(action = "none", column_for_split = NA, samples_in_a = NA, filter_out = NA, keep = NA)
-
-for (patient in names(patients)) {
-    process_patient(
-        maf,
-        patient,
-        patients[[patient]]$action,
-        patients[[patient]]$column_for_split,
-        patients[[patient]]$samples_in_a,
-        patients[[patient]]$filter_out,
-        patients[[patient]]$keep
-    )
+for (patient in unique(clinical$Patient_ID)) {
+    process_patient(maf = maf, patient = patient)
 }
