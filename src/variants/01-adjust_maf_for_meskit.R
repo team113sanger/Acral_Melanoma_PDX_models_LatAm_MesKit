@@ -12,7 +12,7 @@ logger::log_threshold(logger::INFO)
 ########################
 
 data_dir <- here::here("data/")
-maf_file <- paste0(data_dir, "variants/6633_2729_3248-filtered_mutations_matched_allTum_keep.maf")
+maf_file <- paste0(data_dir, "variants/6633_2729_3248-filtered_mutations_matched_allTum_keep_KEEPONLY.maf")
 
 mdata_dir <- here::here("metadata/")
 mdata_file <- paste0(mdata_dir, "6633_2729_3248_METADATA_PDX_from_Latin_America_WES.txt")
@@ -46,7 +46,7 @@ logger::log_info("Adjusting MAF...")
 
 adjusted_maf_path <- paste0(
     data_dir,
-    "variants/6633_2729_3248-filtered_mutations_matched_allTum_keep_adjusted_for_meskit.maf"
+    "variants/6633_2729_3248-filtered_mutations_matched_allTum_keep_KEEPONLY_adjusted_for_meskit.maf"
 )
 
 #  Get IDs of patients for whom there are at least 2 samples available.
@@ -94,7 +94,7 @@ clinical$Tumor_Sample_Label <- clinical$Tumor_Sample_Barcode
 
 clinical_file_path <- paste0(
     data_dir,
-    "variants/6633_2729_3248-filtered_mutations_matched_allTum_keep_clinical_for_meskit.tsv"
+    "variants/6633_2729_3248-filtered_mutations_matched_allTum_keep_KEEPONLY_clinical_for_meskit.tsv"
 )
 
 clinical |>

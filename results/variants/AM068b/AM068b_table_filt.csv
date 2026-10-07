@@ -1,13 +1,13 @@
 sample,event,gene,cosmic_cgc_role_in_cancer,cosmic_cgc_tumour_types_somatic,cosmic_cgc_tumour_types_germline,location,mutation,mutation_status_in_sample,mutation_type,n_samples_mutation_is_present,sample_ids_mutation_is_present
 AM068b_X1,ADGRL2:chr1:81969284:G:A,ADGRL2,NA,NA,NA,chr1:81969284,G:A,1,Public,2,AM068b_X1/AM068b
-AM068b_X1,BRAF:chr7:140753336:A:T,BRAF,"oncogene, fusion","melanoma, colorectal, papillary thyroid, borderline ovarian, NSCLC, cholangiocarcinoma, pilocytic astrocytoma, Spitzoid tumour, pancreas acinar carcinoma, melanocytic nevus, prostate, gastric",,chr7:140753336,A:T,1,Public,2,AM068b_X1/AM068b
-AM068b_X1,COL1A1:chr17:50194726:C:T,COL1A1,fusion,"DFSP, aneurysmal bone cyst",,chr17:50194726,C:T,1,Public,2,AM068b_X1/AM068b
+AM068b_X1,BRAF:chr7:140753336:A:T,BRAF,"oncogene, fusion",melanoma/colorectal/papillary thyroid/borderline ovarian/NSCLC/cholangiocarcinoma/pilocytic astrocytoma/Spitzoid tumour/pancreas acinar carcinoma/melanocytic nevus/prostate/gastric,,chr7:140753336,A:T,1,Public,2,AM068b_X1/AM068b
+AM068b_X1,COL1A1:chr17:50194726:C:T,COL1A1,fusion,DFSP/aneurysmal bone cyst,,chr17:50194726,C:T,1,Public,2,AM068b_X1/AM068b
 AM068b_X1,DMBX1:chr1:46510459:C:T,DMBX1,NA,NA,NA,chr1:46510459,C:T,1,Public,2,AM068b_X1/AM068b
 AM068b_X1,DYRK2:chr12:67657470:C:G,DYRK2,NA,NA,NA,chr12:67657470,C:G,1,Public,2,AM068b_X1/AM068b
 AM068b_X1,MARCHF1:chr4:163854070:G:T,MARCHF1,NA,NA,NA,chr4:163854070,G:T,1,Public,2,AM068b_X1/AM068b
 AM068b_X1,MROH2B:chr5:41042140:C:T,MROH2B,NA,NA,NA,chr5:41042140,C:T,1,Public,2,AM068b_X1/AM068b
 AM068b_X1,MSL3:chrX:11765607:G:A,MSL3,NA,NA,NA,chrX:11765607,G:A,1,Public,2,AM068b_X1/AM068b
-AM068b_X1,MUC16:chr19:8955032:A:-,MUC16,oncogene,"HNSCC, melanoma",,chr19:8955032,A:-,1,Public,2,AM068b_X1/AM068b
+AM068b_X1,MUC16:chr19:8955032:A:-,MUC16,oncogene,HNSCC/melanoma,,chr19:8955032,A:-,1,Public,2,AM068b_X1/AM068b
 AM068b_X1,NIF3L1:chr2:200897185:G:A,NIF3L1,NA,NA,NA,chr2:200897185,G:A,1,Public,2,AM068b_X1/AM068b
 AM068b_X1,NPHP3-ACAD11:chr3:132684750:C:G,NPHP3-ACAD11,NA,NA,NA,chr3:132684750,C:G,1,Public,2,AM068b_X1/AM068b
 AM068b_X1,NPHP3:chr3:132684750:C:G,NPHP3,NA,NA,NA,chr3:132684750,C:G,1,Public,2,AM068b_X1/AM068b
@@ -37,14 +37,14 @@ AM068b_X1,YTHDF2:chr1:28743764:G:A,YTHDF2,NA,NA,NA,chr1:28743764,G:A,1,Private,1
 AM068b_X1,YTHDF2:chr1:28743812:C:T,YTHDF2,NA,NA,NA,chr1:28743812,C:T,1,Private,1,AM068b_X1
 AM068b_X1,ZNF808:chr19:52555599:G:A,ZNF808,NA,NA,NA,chr19:52555599,G:A,1,Private,1,AM068b_X1
 AM068b,ADGRL2:chr1:81969284:G:A,ADGRL2,NA,NA,NA,chr1:81969284,G:A,1,Public,2,AM068b_X1/AM068b
-AM068b,BRAF:chr7:140753336:A:T,BRAF,"oncogene, fusion","melanoma, colorectal, papillary thyroid, borderline ovarian, NSCLC, cholangiocarcinoma, pilocytic astrocytoma, Spitzoid tumour, pancreas acinar carcinoma, melanocytic nevus, prostate, gastric",,chr7:140753336,A:T,1,Public,2,AM068b_X1/AM068b
-AM068b,COL1A1:chr17:50194726:C:T,COL1A1,fusion,"DFSP, aneurysmal bone cyst",,chr17:50194726,C:T,1,Public,2,AM068b_X1/AM068b
+AM068b,BRAF:chr7:140753336:A:T,BRAF,"oncogene, fusion",melanoma/colorectal/papillary thyroid/borderline ovarian/NSCLC/cholangiocarcinoma/pilocytic astrocytoma/Spitzoid tumour/pancreas acinar carcinoma/melanocytic nevus/prostate/gastric,,chr7:140753336,A:T,1,Public,2,AM068b_X1/AM068b
+AM068b,COL1A1:chr17:50194726:C:T,COL1A1,fusion,DFSP/aneurysmal bone cyst,,chr17:50194726,C:T,1,Public,2,AM068b_X1/AM068b
 AM068b,DMBX1:chr1:46510459:C:T,DMBX1,NA,NA,NA,chr1:46510459,C:T,1,Public,2,AM068b_X1/AM068b
 AM068b,DYRK2:chr12:67657470:C:G,DYRK2,NA,NA,NA,chr12:67657470,C:G,1,Public,2,AM068b_X1/AM068b
 AM068b,MARCHF1:chr4:163854070:G:T,MARCHF1,NA,NA,NA,chr4:163854070,G:T,1,Public,2,AM068b_X1/AM068b
 AM068b,MROH2B:chr5:41042140:C:T,MROH2B,NA,NA,NA,chr5:41042140,C:T,1,Public,2,AM068b_X1/AM068b
 AM068b,MSL3:chrX:11765607:G:A,MSL3,NA,NA,NA,chrX:11765607,G:A,1,Public,2,AM068b_X1/AM068b
-AM068b,MUC16:chr19:8955032:A:-,MUC16,oncogene,"HNSCC, melanoma",,chr19:8955032,A:-,1,Public,2,AM068b_X1/AM068b
+AM068b,MUC16:chr19:8955032:A:-,MUC16,oncogene,HNSCC/melanoma,,chr19:8955032,A:-,1,Public,2,AM068b_X1/AM068b
 AM068b,NIF3L1:chr2:200897185:G:A,NIF3L1,NA,NA,NA,chr2:200897185,G:A,1,Public,2,AM068b_X1/AM068b
 AM068b,NPHP3-ACAD11:chr3:132684750:C:G,NPHP3-ACAD11,NA,NA,NA,chr3:132684750,C:G,1,Public,2,AM068b_X1/AM068b
 AM068b,NPHP3:chr3:132684750:C:G,NPHP3,NA,NA,NA,chr3:132684750,C:G,1,Public,2,AM068b_X1/AM068b
@@ -58,6 +58,6 @@ AM068b,CACNA1B:chr9:138013211:C:G,CACNA1B,NA,NA,NA,chr9:138013211,C:G,1,Private,
 AM068b,EML6:chr2:54844125:T:C,EML6,NA,NA,NA,chr2:54844125,T:C,1,Private,1,AM068b
 AM068b,NLRP2:chr19:54982644:G:A,NLRP2,NA,NA,NA,chr19:54982644,G:A,1,Private,1,AM068b
 AM068b,PKHD1L1:chr8:109486803:A:C,PKHD1L1,NA,NA,NA,chr8:109486803,A:C,1,Private,1,AM068b
-AM068b,SDHA:chr5:236441:T:G,SDHA,TSG,"GIST, paraganglioma",paraganglioma,chr5:236441,T:G,1,Private,1,AM068b
+AM068b,SDHA:chr5:236441:T:G,SDHA,TSG,GIST/paraganglioma,paraganglioma,chr5:236441,T:G,1,Private,1,AM068b
 AM068b,SLC22A15:chr1:116035221:C:G,SLC22A15,NA,NA,NA,chr1:116035221,C:G,1,Private,1,AM068b
 AM068b,SLC5A7:chr2:108002027:G:C,SLC5A7,NA,NA,NA,chr2:108002027,G:C,1,Private,1,AM068b

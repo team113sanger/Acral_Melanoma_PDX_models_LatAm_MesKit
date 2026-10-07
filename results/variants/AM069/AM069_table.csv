@@ -3,7 +3,7 @@ AM069_X1,ACER3:chr11:76959019:A:C,ACER3,NA,NA,NA,chr11:76959019,A:C,1,Public,2,A
 AM069_X1,ADD2:chr2:70692455:G:A,ADD2,NA,NA,NA,chr2:70692455,G:A,1,Public,2,AM069_X1/AM069
 AM069_X1,AKAP12:chr6:151353369:G:C,AKAP12,NA,NA,NA,chr6:151353369,G:C,1,Public,2,AM069_X1/AM069
 AM069_X1,AXDND1:chr1:179393976:C:T,AXDND1,NA,NA,NA,chr1:179393976,C:T,1,Public,2,AM069_X1/AM069
-AM069_X1,BRAF:chr7:140753336:A:T,BRAF,"oncogene, fusion","melanoma, colorectal, papillary thyroid, borderline ovarian, NSCLC, cholangiocarcinoma, pilocytic astrocytoma, Spitzoid tumour, pancreas acinar carcinoma, melanocytic nevus, prostate, gastric",,chr7:140753336,A:T,1,Public,2,AM069_X1/AM069
+AM069_X1,BRAF:chr7:140753336:A:T,BRAF,"oncogene, fusion",melanoma/colorectal/papillary thyroid/borderline ovarian/NSCLC/cholangiocarcinoma/pilocytic astrocytoma/Spitzoid tumour/pancreas acinar carcinoma/melanocytic nevus/prostate/gastric,,chr7:140753336,A:T,1,Public,2,AM069_X1/AM069
 AM069_X1,C22orf42:chr22:32150362:T:C,C22orf42,NA,NA,NA,chr22:32150362,T:C,1,Public,2,AM069_X1/AM069
 AM069_X1,CPLX1:chr4:786660:G:A,CPLX1,NA,NA,NA,chr4:786660,G:A,1,Public,2,AM069_X1/AM069
 AM069_X1,CYP2W1:chr7:987198:C:T,CYP2W1,NA,NA,NA,chr7:987198,C:T,1,Public,2,AM069_X1/AM069
@@ -47,7 +47,7 @@ AM069,ACER3:chr11:76959019:A:C,ACER3,NA,NA,NA,chr11:76959019,A:C,1,Public,2,AM06
 AM069,ADD2:chr2:70692455:G:A,ADD2,NA,NA,NA,chr2:70692455,G:A,1,Public,2,AM069_X1/AM069
 AM069,AKAP12:chr6:151353369:G:C,AKAP12,NA,NA,NA,chr6:151353369,G:C,1,Public,2,AM069_X1/AM069
 AM069,AXDND1:chr1:179393976:C:T,AXDND1,NA,NA,NA,chr1:179393976,C:T,1,Public,2,AM069_X1/AM069
-AM069,BRAF:chr7:140753336:A:T,BRAF,"oncogene, fusion","melanoma, colorectal, papillary thyroid, borderline ovarian, NSCLC, cholangiocarcinoma, pilocytic astrocytoma, Spitzoid tumour, pancreas acinar carcinoma, melanocytic nevus, prostate, gastric",,chr7:140753336,A:T,1,Public,2,AM069_X1/AM069
+AM069,BRAF:chr7:140753336:A:T,BRAF,"oncogene, fusion",melanoma/colorectal/papillary thyroid/borderline ovarian/NSCLC/cholangiocarcinoma/pilocytic astrocytoma/Spitzoid tumour/pancreas acinar carcinoma/melanocytic nevus/prostate/gastric,,chr7:140753336,A:T,1,Public,2,AM069_X1/AM069
 AM069,C22orf42:chr22:32150362:T:C,C22orf42,NA,NA,NA,chr22:32150362,T:C,1,Public,2,AM069_X1/AM069
 AM069,CPLX1:chr4:786660:G:A,CPLX1,NA,NA,NA,chr4:786660,G:A,1,Public,2,AM069_X1/AM069
 AM069,CYP2W1:chr7:987198:C:T,CYP2W1,NA,NA,NA,chr7:987198,C:T,1,Public,2,AM069_X1/AM069

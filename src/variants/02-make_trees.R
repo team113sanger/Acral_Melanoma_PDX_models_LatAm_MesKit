@@ -14,8 +14,8 @@ logger::log_threshold(logger::INFO)
 ########################
 
 data_dir <- here::here("data/")
-maf_file <- paste0(data_dir, "variants/6633_2729_3248-filtered_mutations_matched_allTum_keep_adjusted_for_meskit.maf")
-clinical_file <- paste0(data_dir, "variants/6633_2729_3248-filtered_mutations_matched_allTum_keep_clinical_for_meskit.tsv")
+maf_file <- paste0(data_dir, "variants/6633_2729_3248-filtered_mutations_matched_allTum_keep_KEEPONLY_adjusted_for_meskit.maf")
+clinical_file <- paste0(data_dir, "variants/6633_2729_3248-filtered_mutations_matched_allTum_keep_KEEPONLY_clinical_for_meskit.tsv")
 cosmic_file <- paste0(data_dir, "cancer_gene_census.v97.csv")
 
 mdata_dir <- here::here("metadata/")
@@ -110,6 +110,26 @@ add_cosmic_info <- function(df) {
     df$cosmic_cgc_role_in_cancer <- cgc$`Role in Cancer`[match(df$gene, cgc$`Gene Symbol`)]
     df$cosmic_cgc_tumour_types_somatic <- cgc$`Tumour Types(Somatic)`[match(df$gene, cgc$`Gene Symbol`)]
     df$cosmic_cgc_tumour_types_germline <- cgc$`Tumour Types(Germline)`[match(df$gene, cgc$`Gene Symbol`)]
+
+    df$cosmic_cgc_tumour_types_somatic <- sapply(1:nrow(df), function(x) {
+        tumour_types <- df$cosmic_cgc_tumour_types_somatic[x]
+
+        if (!is.na(tumour_types)) {
+            tumour_types <- gsub(", ", "/", tumour_types)
+        }
+
+        return(tumour_types)
+    })
+
+    df$cosmic_cgc_tumour_types_germline <- sapply(1:nrow(df), function(x) {
+        tumour_types <- df$cosmic_cgc_tumour_types_germline[x]
+
+        if (!is.na(tumour_types)) {
+            tumour_types <- gsub(", ", "/", tumour_types)
+        }
+
+        return(tumour_types)
+    })
 
     return(df)
 }
@@ -251,10 +271,25 @@ process_patient <- function(maf, patient) {
     cat("\n")
 }
 
-#########################
-#### Organising data ####
-#########################
+####################
+#### Make trees ####
+####################
 
 for (patient in unique(clinical$Patient_ID)) {
     process_patient(maf = maf, patient = patient)
 }
+
+
+##########################
+#### Collate patients ####
+##########################
+
+files <- fs::dir_ls(outdir, recurse = TRUE, glob = "*_filt.csv$")
+all_samples <- readr::read_csv(files)
+all_samples$sample <- gsub("_X", "-X", all_samples$sample)
+
+all_samples |>
+    dplyr::mutate(patient = stringr::str_extract(sample, "^AM[0-9]+[ab]?")) |>
+    dplyr::relocate(patient, .before = sample) |>
+    dplyr::arrange(patient, sample) |>
+    readr::write_csv(paste0(outdir, "supplementary_table_6.csv"))

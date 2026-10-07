@@ -8,7 +8,7 @@ AM045-X1,GPATCH2L:chr14:76154604:C:T,GPATCH2L,NA,NA,NA,chr14:76154604,C:T,1,Publ
 AM045-X1,GSC2:chr22:19149848:C:A,GSC2,NA,NA,NA,chr22:19149848,C:A,1,Public,2,AM045-X1/AM045
 AM045-X1,GUCY2C:chr12:14651442:C:T,GUCY2C,NA,NA,NA,chr12:14651442,C:T,1,Public,2,AM045-X1/AM045
 AM045-X1,HERC2:chr15:28272296:G:A,HERC2,NA,NA,NA,chr15:28272296,G:A,1,Public,2,AM045-X1/AM045
-AM045-X1,HRAS:chr11:533875:G:T,HRAS,oncogene,"infrequent sarcomas, rare other tumour types","rhabdomyosarcoma, ganglioneuroblastoma, bladder",chr11:533875,G:T,1,Public,2,AM045-X1/AM045
+AM045-X1,HRAS:chr11:533875:G:T,HRAS,oncogene,infrequent sarcomas/rare other tumour types,rhabdomyosarcoma/ganglioneuroblastoma/bladder,chr11:533875,G:T,1,Public,2,AM045-X1/AM045
 AM045-X1,INO80:chr15:41059865:A:C,INO80,NA,NA,NA,chr15:41059865,A:C,1,Public,2,AM045-X1/AM045
 AM045-X1,LRP2:chr2:169175315:G:A,LRP2,NA,NA,NA,chr2:169175315,G:A,1,Public,2,AM045-X1/AM045
 AM045-X1,MARK4:chr19:45302677:C:T,MARK4,NA,NA,NA,chr19:45302677,C:T,1,Public,2,AM045-X1/AM045
@@ -46,7 +46,7 @@ AM045-X1,MFSD2A:chr1:39968358:C:T,MFSD2A,NA,NA,NA,chr1:39968358,C:T,1,Private,1,
 AM045-X1,MTA2:chr11:62597330:G:A,MTA2,NA,NA,NA,chr11:62597330,G:A,1,Private,1,AM045-X1
 AM045-X1,MYH9:chr22:36348919:G:T,MYH9,"TSG, fusion",ALCL,,chr22:36348919,G:T,1,Private,1,AM045-X1
 AM045-X1,NPR3:chr5:32738863:G:T,NPR3,NA,NA,NA,chr5:32738863,G:T,1,Private,1,AM045-X1
-AM045-X1,NTRK3:chr15:87877043:C:A,NTRK3,"oncogene, fusion","congenital fibrosarcoma, secretory breast",,chr15:87877043,C:A,1,Private,1,AM045-X1
+AM045-X1,NTRK3:chr15:87877043:C:A,NTRK3,"oncogene, fusion",congenital fibrosarcoma/secretory breast,,chr15:87877043,C:A,1,Private,1,AM045-X1
 AM045-X1,ONECUT2:chr18:57435823:C:T,ONECUT2,NA,NA,NA,chr18:57435823,C:T,1,Private,1,AM045-X1
 AM045-X1,ONECUT2:chr18:57435836:T:C,ONECUT2,NA,NA,NA,chr18:57435836,T:C,1,Private,1,AM045-X1
 AM045-X1,PRRG1:chrX:37453357:-:C,PRRG1,NA,NA,NA,chrX:37453357,-:C,1,Private,1,AM045-X1
@@ -78,7 +78,7 @@ AM045,GPATCH2L:chr14:76154604:C:T,GPATCH2L,NA,NA,NA,chr14:76154604,C:T,1,Public,
 AM045,GSC2:chr22:19149848:C:A,GSC2,NA,NA,NA,chr22:19149848,C:A,1,Public,2,AM045-X1/AM045
 AM045,GUCY2C:chr12:14651442:C:T,GUCY2C,NA,NA,NA,chr12:14651442,C:T,1,Public,2,AM045-X1/AM045
 AM045,HERC2:chr15:28272296:G:A,HERC2,NA,NA,NA,chr15:28272296,G:A,1,Public,2,AM045-X1/AM045
-AM045,HRAS:chr11:533875:G:T,HRAS,oncogene,"infrequent sarcomas, rare other tumour types","rhabdomyosarcoma, ganglioneuroblastoma, bladder",chr11:533875,G:T,1,Public,2,AM045-X1/AM045
+AM045,HRAS:chr11:533875:G:T,HRAS,oncogene,infrequent sarcomas/rare other tumour types,rhabdomyosarcoma/ganglioneuroblastoma/bladder,chr11:533875,G:T,1,Public,2,AM045-X1/AM045
 AM045,INO80:chr15:41059865:A:C,INO80,NA,NA,NA,chr15:41059865,A:C,1,Public,2,AM045-X1/AM045
 AM045,LRP2:chr2:169175315:G:A,LRP2,NA,NA,NA,chr2:169175315,G:A,1,Public,2,AM045-X1/AM045
 AM045,MARK4:chr19:45302677:C:T,MARK4,NA,NA,NA,chr19:45302677,C:T,1,Public,2,AM045-X1/AM045
@@ -100,10 +100,10 @@ AM045,CCDC14:chr3:123961234:A:C,CCDC14,NA,NA,NA,chr3:123961234,A:C,1,Private,1,A
 AM045,CCDC3:chr10:12898535:G:A,CCDC3,NA,NA,NA,chr10:12898535,G:A,1,Private,1,AM045
 AM045,COL27A1:chr9:114290302:C:T,COL27A1,NA,NA,NA,chr9:114290302,C:T,1,Private,1,AM045
 AM045,LGI4:chr19:35134648:CAG:-,LGI4,NA,NA,NA,chr19:35134648,CAG:-,1,Private,1,AM045
-AM045,MTOR:chr1:11129766:G:A,MTOR,oncogene,"endometrial carcinoma, head and neck, clear cell renal cell carcinoma, anaplastic thyroid cancer, urothelial cell carcinoma, central nervous system tumours, testicular germ cell tumours and other tumour types",,chr1:11129766,G:A,1,Private,1,AM045
-AM045,MUC16:chr19:8953370:G:T,MUC16,oncogene,"HNSCC, melanoma",,chr19:8953370,G:T,1,Private,1,AM045
+AM045,MTOR:chr1:11129766:G:A,MTOR,oncogene,endometrial carcinoma/head and neck/clear cell renal cell carcinoma/anaplastic thyroid cancer/urothelial cell carcinoma/central nervous system tumours/testicular germ cell tumours and other tumour types,,chr1:11129766,G:A,1,Private,1,AM045
+AM045,MUC16:chr19:8953370:G:T,MUC16,oncogene,HNSCC/melanoma,,chr19:8953370,G:T,1,Private,1,AM045
 AM045,OR8G1:chr11:124250541:T:G,OR8G1,NA,NA,NA,chr11:124250541,T:G,1,Private,1,AM045
-AM045,PABPC1:chr8:100709179:T:C,PABPC1,"oncogene, TSG","HNSCC, biliary tract carcinoma",,chr8:100709179,T:C,1,Private,1,AM045
+AM045,PABPC1:chr8:100709179:T:C,PABPC1,"oncogene, TSG",HNSCC/biliary tract carcinoma,,chr8:100709179,T:C,1,Private,1,AM045
 AM045,PTPRF:chr1:43591419:A:C,PTPRF,NA,NA,NA,chr1:43591419,A:C,1,Private,1,AM045
 AM045,SCAP:chr3:47425507:G:C,SCAP,NA,NA,NA,chr3:47425507,G:C,1,Private,1,AM045
 AM045,SLC8A3:chr14:70051072:C:A,SLC8A3,NA,NA,NA,chr14:70051072,C:A,1,Private,1,AM045
