@@ -119,7 +119,7 @@ The `data/` directory contains most of the input files that are required to run 
 
 ### Copy number data in `data/copy_number/`
 
-- `segments/`: this subdirectory contains Sequenza segments, which can also be downloaded from [FigShare](https://figshare.com/articles/dataset/Sequenza_output_results_data_from_Brazilian_Acral_melanoma_samples_jan2025_/29088173?file=54607436). 
+- `segments/`: this subdirectory contains Sequenza segments, which can also be downloaded from [FigShare](https://figshare.com/articles/dataset/Sequenza_segmentation_output_files/34745433). 
 
 - `Adjusted_ploidy_table.tsv`: this file contains the ploidy values for each sample.
 
